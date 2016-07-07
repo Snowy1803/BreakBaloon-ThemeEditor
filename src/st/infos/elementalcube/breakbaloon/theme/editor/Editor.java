@@ -69,7 +69,10 @@ public class Editor extends JFrame {
 
 	public void setContentEditor(ContentEditor content) {
 		container.removeAll();
-		if (content != null) container.add(content);
+		if (content != null) {
+			container.add(content);
+		}
+		revalidate();
 	}
 
 	public ContentEditor getContentEditor() {

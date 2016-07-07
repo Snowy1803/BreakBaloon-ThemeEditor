@@ -1,6 +1,9 @@
 package st.infos.elementalcube.breakbaloon.theme.editor;
 
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.ContentEditor;
+import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.BaloonImageContentEditor;
+import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.BaloonImageContentEditor.EnumBaloonType;
+import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.PropertiesContentEditor;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,10 +31,10 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 
 	public static LeftMenuComponent[] getList(Editor editor) {
 		LeftMenuComponent[] list = new LeftMenuComponent[6];
-		list[0] = new LeftMenuComponent(editor, new ContentEditor("editor.properties"));
-		list[1] = new LeftMenuComponent(editor, new ContentEditor("editor.baloon.closed"));
-		list[2] = new LeftMenuComponent(editor, new ContentEditor("editor.baloon.opened"));
-		list[3] = new LeftMenuComponent(editor, new ContentEditor("editor.baloon.openedGood"));
+		list[0] = new LeftMenuComponent(editor, new PropertiesContentEditor("editor.properties"));
+		list[1] = new LeftMenuComponent(editor, new BaloonImageContentEditor("editor.baloon.closed", EnumBaloonType.CLOSED));
+		list[2] = new LeftMenuComponent(editor, new BaloonImageContentEditor("editor.baloon.opened", EnumBaloonType.OPENED));
+		list[3] = new LeftMenuComponent(editor, new BaloonImageContentEditor("editor.baloon.openedGood", EnumBaloonType.OPENED_GOOD));
 		list[4] = new LeftMenuComponent(editor, new ContentEditor("editor.sound.pump"));
 		list[5] = new LeftMenuComponent(editor, new ContentEditor("editor.sound.wpump"));
 		return list;
