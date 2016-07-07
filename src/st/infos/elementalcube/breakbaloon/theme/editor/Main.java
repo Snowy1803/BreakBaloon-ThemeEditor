@@ -11,6 +11,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
 	private static final String ASSOC = ".bbtheme=BreakBaloon.Theme";
+	private static final String ASSOC_BASH = "C:\\Program Files\\Java\\jre1.8.0_51\\bin\\javaw -jar \"C:\\Program Files\\BreakBaloon\\BBThemeEditor.jar\" %1";
 	
 	public static void main(String[] args) {
 		System.setProperty("apple.awt.application.name", "BreakBaloon Theme Editor");
@@ -24,9 +25,9 @@ public class Main {
 			if (!execute("assoc .bbtheme").contains(ASSOC)) {
 				System.out.println("Associating .bbtheme to BBThemeEditor...");
 				if (execute("assoc " + ASSOC).contains(ASSOC)) {
-					execute("ftype BreakBaloon.Theme=\"javaw -jar \\\"%ProgramFiles%\\BreakBaloon\\BBThemeEditor.jar\\\"\"");
+					execute("ftype BreakBaloon.Theme=" + ASSOC_BASH);
 				} else {
-					System.out.println(execute("assoc .bbtheme"));
+					execute("assoc .bbtheme");
 					JOptionPane.showMessageDialog(null, Lang.getString("windows.assoc.adminNeeded.text"),
 							Lang.getString("windows.assoc.adminNeeded.title"), JOptionPane.ERROR_MESSAGE);
 				}
