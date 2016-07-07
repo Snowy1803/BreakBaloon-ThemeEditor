@@ -19,7 +19,7 @@ import javax.swing.JSplitPane;
 
 public class Editor extends JFrame {
 	private static final long serialVersionUID = -247298518651532746L;
-	private BBTheme theme;
+	public BBTheme theme;
 	private boolean saved = true;
 	private File saveDirectory;
 	private JPanel menu, container;

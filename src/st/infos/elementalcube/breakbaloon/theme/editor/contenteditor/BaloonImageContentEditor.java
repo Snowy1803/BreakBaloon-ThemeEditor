@@ -1,5 +1,7 @@
 package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
+import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -15,13 +17,13 @@ public class BaloonImageContentEditor extends ContentEditor {
 	private DrawEditor editor;
 	private ImageEditorToolbar toolbar;
 	
-	public BaloonImageContentEditor(String name, EnumBaloonType type) {
+	public BaloonImageContentEditor(Editor editor, String name, EnumBaloonType type) {
 		super(name);
 		setLayout(new BorderLayout());
 		this.type = type;
-		this.editor = new DrawEditor(new Dimension(75, 75));
-		this.toolbar = new ImageEditorToolbar(editor);
-		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JPanel(), editor);
+		this.editor = new DrawEditor(editor, new Dimension(75, 75));
+		this.toolbar = new ImageEditorToolbar(this.editor);
+		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JPanel(), this.editor);
 		pane.setContinuousLayout(true);
 		add(pane, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.SOUTH);

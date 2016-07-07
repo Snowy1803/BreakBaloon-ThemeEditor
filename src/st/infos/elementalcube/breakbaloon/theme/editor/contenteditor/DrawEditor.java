@@ -1,6 +1,7 @@
 package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
 import st.infos.elementalcube.breakbaloon.theme.editor.BBTheme;
+import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,21 +19,24 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 public class DrawEditor extends JPanel implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = -5583820906102563391L;
 	private BufferedImage image;
 	private int zoomLevel = 5;
-	private Color currentColor = Color.RED;
+	private Color currentColor = Color.BLACK;
 	private Point last;
+	private Editor editor;
 	
-	public DrawEditor(Dimension imageDimension) {
+	public DrawEditor(Editor editor, Dimension imageDimension) {
 		setTransferHandler(new ImageEditorTransferHandler(this));
 		setDoubleBuffered(false);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		image = new BufferedImage(imageDimension.width, imageDimension.height, BufferedImage.TYPE_INT_RGB);
+		this.editor = editor;
 		for (int i = 0; i < image.getWidth(); i++) {
 	        for (int j = 0; j < image.getHeight(); j++) {
 	            image.setRGB(i, j, Color.white.getRGB());
@@ -78,7 +82,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		draw(e.getPoint());
+		draw(e.getPoint(), SwingUtilities.isLeftMouseButton(e));
 	}
 	
 	@Override
@@ -94,23 +98,28 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		draw(e.getPoint());
+		draw(e.getPoint(), SwingUtilities.isLeftMouseButton(e));
 	}
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {}
 	
-	private void draw(Point point) {
+	private void draw(Point point, boolean leftClick) {
 		Point scaled = new Point(point.x / zoomLevel, point.y / zoomLevel);
 		if (last == null) last = scaled;
 		try {
-			drawLineImpl(new Point(scaled));
+			drawLineImpl(new Point(scaled), leftClick ? currentColor.getRGB() : getBackgroundColor());
 		} catch (ArrayIndexOutOfBoundsException ex) {}
 		repaint();
 		last = scaled;
 	}
 	
-	private void drawLineImpl(Point point) {
+	private int getBackgroundColor() {
+		String prop = editor.theme.properties.getProperty("BACKGROUND");
+		return prop == null ? Color.WHITE.getRGB() : Integer.parseInt(prop);
+	}
+
+	private void drawLineImpl(Point point, int color) {
 		int x = last.x, x2 = point.x, y = last.y, y2 = point.y;
 		int w = x2 - x;
 		int h = y2 - y;
@@ -132,7 +141,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		}
 		int numerator = longest >> 1;
 		for (int i = 0; i <= longest; i++) {
-			image.setRGB(x, y, currentColor.getRGB());
+			image.setRGB(x, y, color);
 			numerator += shortest;
 			if (!(numerator < longest)) {
 				numerator -= longest;
