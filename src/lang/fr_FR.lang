@@ -8,3 +8,10 @@ editor.name=Editeur de thèmes BreakBaloon
 editor.name.unsaved=* Editeur de thèmes BreakBaloon
 editor.saveUnsavedChanges.title=Sauvegarder
 editor.saveUnsavedChanges.text=Souhaitez-vous sauvegarder vos modifications avant de fermer l'éditeur de thèmes ?
+
+editor.properties=Propriétés
+editor.baloon.closed=Ballons
+editor.baloon.opened=Ballons crevés
+editor.baloon.openedGood=Ballons corrects
+editor.sound.pump=Son
+editor.sound.wpump=Son (Ballon correct)

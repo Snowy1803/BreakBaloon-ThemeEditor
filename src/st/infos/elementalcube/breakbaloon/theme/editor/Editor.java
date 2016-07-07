@@ -2,19 +2,26 @@ package st.infos.elementalcube.breakbaloon.theme.editor;
 
 import st.infos.elementalcube.snowylangapi.Lang;
 
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
 public class Editor extends JFrame {
 	private static final long serialVersionUID = -247298518651532746L;
 	private BBTheme theme;
-	private boolean saved;
+	private boolean saved = true;
 	private File saveDirectory;
+	private JPanel menu, container;
 	
 	public Editor(String file) {
 		this(new File(file));
@@ -40,10 +47,32 @@ public class Editor extends JFrame {
 	private void construct() {
 		setTitle(Lang.getString("editor.name"));
 		
-		setSize(900, 750);
+		menu = new JPanel();
+		menu.setLayout(new BoxLayout(menu, BoxLayout.PAGE_AXIS));
+		for (LeftMenuComponent component : LeftMenuComponent.getList(this)) {
+			menu.add(component);
+		}
+		menu.setMinimumSize(new Dimension(100, 200 * menu.getComponentCount()));
+		menu.setMaximumSize(new Dimension(300, 200 * menu.getComponentCount()));
+		container = new JPanel(new GridLayout(1, 1));
+		
+		JSplitPane contentPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(menu), new JScrollPane(container));
+		contentPane.setContinuousLayout(true);
+		contentPane.setDividerLocation(200);
+		setContentPane(contentPane);
+		setSize(900, 650);
 		setLocationRelativeTo(null);
 		addWindowListener(new WindowCloseListener());
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	}
+
+	public void setContentEditor(ContentEditor content) {
+		container.removeAll();
+		if (content != null) container.add(content);
+	}
+
+	public ContentEditor getContentEditor() {
+		return container.getComponentCount() == 1 ? (ContentEditor) container.getComponent(0) : null;
 	}
 	
 	public void makeDirty() {
