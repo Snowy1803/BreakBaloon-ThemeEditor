@@ -2,6 +2,7 @@ package st.infos.elementalcube.breakbaloon.theme.editor;
 
 import st.infos.elementalcube.snowylangapi.LangLoader;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +12,8 @@ import java.util.Properties;
 
 public class BBTheme {
 	public final Properties properties;
+	public BufferedImage[] opened, openedGood, closed;
+	public BufferedImage icon, wicon, cursor;
 	
 	public BBTheme() {
 		this.properties = new Properties();
@@ -36,5 +39,13 @@ public class BBTheme {
 			return properties.getProperty(metadata.toUpperCase());
 		}
 		return properties.getProperty(metadata.toUpperCase() + "_" + LangLoader.checkLocale(locale.toString()));
+	}
+	
+	public void setMetadata(String metadata, Locale locale, String value) {
+		if (locale == null) {
+			properties.setProperty(metadata.toUpperCase(), value);
+		} else {
+			properties.setProperty(metadata.toUpperCase() + "_" + LangLoader.checkLocale(locale.toString()), value);
+		}
 	}
 }
