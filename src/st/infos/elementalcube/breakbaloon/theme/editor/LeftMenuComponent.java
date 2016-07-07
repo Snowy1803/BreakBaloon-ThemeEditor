@@ -1,5 +1,7 @@
 package st.infos.elementalcube.breakbaloon.theme.editor;
 
+import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.ContentEditor;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;

@@ -1,4 +1,4 @@
-package st.infos.elementalcube.breakbaloon.theme.editor;
+package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
 import st.infos.elementalcube.snowylangapi.Lang;
 
