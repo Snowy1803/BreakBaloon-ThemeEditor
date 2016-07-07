@@ -1,0 +1,5 @@
+lang.id=fr_FR
+lang.text=Français
+
+windows.assoc.adminNeeded.title=Association impossible
+windows.assoc.adminNeeded.text=Vous devez exécuter le programme en mode administrateur pour activer l'association des fichiers.
