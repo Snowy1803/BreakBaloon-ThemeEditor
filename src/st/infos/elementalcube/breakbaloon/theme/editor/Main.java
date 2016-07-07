@@ -33,7 +33,7 @@ public class Main {
 			}
 		}
 		if (args.length >= 1) {
-			new Editor(args[1]).setVisible(true);
+			new Editor(args[0]).setVisible(true);
 		} else {
 			new Editor().setVisible(true);
 		}
