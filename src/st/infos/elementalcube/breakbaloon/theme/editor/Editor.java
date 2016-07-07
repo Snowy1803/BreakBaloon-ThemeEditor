@@ -1,6 +1,7 @@
 package st.infos.elementalcube.breakbaloon.theme.editor;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 
@@ -17,6 +18,13 @@ public class Editor extends JFrame {
 	}
 
 	public Editor(File file) {
-		this.theme = BBTheme.parseTheme(file);
+		try {
+			this.theme = BBTheme.parseTheme(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (this.theme == null) {
+			this.theme = new BBTheme();
+		}
 	}
 }
