@@ -20,6 +20,11 @@ editor.image.toolbar=Outils de dessin
 editor.image.toolbar.color=Couleur
 editor.image.number=Ballon n°%d
 
+editor.props.name=Nom du thème :
+editor.props.description=Courte description :
+editor.props.author=Auteur :
+editor.props.version=Version :
+
 props.lang.base=Base
 props.lang.base.tooltip=Propriétés qui sont les mêmes dans toutes les langues
 props.lang.fr_FR=Français

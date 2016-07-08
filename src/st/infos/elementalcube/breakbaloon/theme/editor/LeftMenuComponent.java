@@ -24,6 +24,7 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 	private LeftMenuComponent(Editor editor, ContentEditor action) {
 		this.editor = editor;
 		this.action = action;
+		action.loadFromBBTheme(editor.theme);
 		addMouseListener(this);
 		setMinimumSize(new Dimension(100, 100));
 		setMaximumSize(new Dimension(300, 300));
@@ -32,7 +33,7 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 
 	public static LeftMenuComponent[] getList(Editor editor) {
 		LeftMenuComponent[] list = new LeftMenuComponent[6];
-		list[0] = new LeftMenuComponent(editor, new PropertiesContentEditor("editor.properties"));
+		list[0] = new LeftMenuComponent(editor, new PropertiesContentEditor(editor, "editor.properties"));
 		list[1] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.closed", EnumBaloonType.CLOSED));
 		list[2] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.opened", EnumBaloonType.OPENED));
 		list[3] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.openedGood", EnumBaloonType.OPENED_GOOD));
@@ -71,5 +72,9 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		hover = false;
 		repaint();
+	}
+
+	public ContentEditor getContentEditor() {
+		return action;
 	}
 }

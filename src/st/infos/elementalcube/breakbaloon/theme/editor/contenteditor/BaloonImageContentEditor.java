@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -28,6 +29,8 @@ public class BaloonImageContentEditor extends ContentEditor {
 	private Editor frame;
 	private JSplitPane pane;
 	
+	private Image overviewCache;
+	
 	public BaloonImageContentEditor(Editor editor, String name, EnumBaloonType type) {
 		super(name);
 		setLayout(new BorderLayout());
@@ -44,17 +47,19 @@ public class BaloonImageContentEditor extends ContentEditor {
 		pane.setEnabled(false);
 		add(pane, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.SOUTH);
+		
+		try {
+			overviewCache = ImageIO.read(getClass().getResource("/img/" + type.langKey + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void paintOverview(Dimension dimension, Graphics2D g2d) {
 		super.paintOverview(dimension, g2d);
-		try {
-			g2d.drawImage(ImageIO.read(getClass().getResource("/img/" + type.langKey + ".png")), dimension.width / 2 - 32, dimension.height / 2 - 32,
-					64, 64, null);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		g2d.drawImage(overviewCache, dimension.width / 2 - 32, dimension.height / 2 - 32,
+				64, 64, null);
 	}
 	
 	public void constructEditors() {
@@ -85,7 +90,7 @@ public class BaloonImageContentEditor extends ContentEditor {
 
 	@Override
 	public void loadFromBBTheme(BBTheme theme) {
-		BufferedImage[] images = new BufferedImage[0];
+		BufferedImage[] images = null;
 		switch (type) {
 		case CLOSED:
 			images = theme.closed;
@@ -97,8 +102,10 @@ public class BaloonImageContentEditor extends ContentEditor {
 			images = theme.openedGood;
 			break;
 		}
-		for (int i = 0; i < images.length; i++) {
-			editors[i].setImage(images[i]);
+		if (images != null) {
+			for (int i = 0; i < images.length; i++) {
+				editors[i].setImage(images[i]);
+			}
 		}
 	}
 	

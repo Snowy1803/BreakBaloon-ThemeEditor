@@ -3,6 +3,7 @@ package st.infos.elementalcube.breakbaloon.theme.editor;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.ContentEditor;
 import st.infos.elementalcube.snowylangapi.Lang;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
@@ -118,6 +119,15 @@ public class Editor extends JFrame {
 		@Override
 		public void windowClosing(WindowEvent e) {
 			quit();
+		}
+	}
+
+	public void reload() {
+		for (Component leftPane : menu.getComponents()) {
+			((LeftMenuComponent) leftPane).getContentEditor().saveToBBTheme(theme);
+		}
+		for (Component leftPane : menu.getComponents()) {
+			((LeftMenuComponent) leftPane).getContentEditor().loadFromBBTheme(theme);
 		}
 	}
 }
