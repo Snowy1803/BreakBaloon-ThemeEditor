@@ -18,7 +18,9 @@ import java.util.Arrays;
 import java.util.Locale;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -52,7 +54,8 @@ public class PropertiesContentEditor extends ContentEditor {
 	public void paintOverview(Dimension dimension, Graphics2D g2d) {
 		super.paintOverview(dimension, g2d);
 		try {
-			g2d.drawImage(ImageIO.read(getClass().getResource("/img/properties.png")), dimension.width /2 - 32, dimension.height /2 - 32, 64, 64, null);
+			g2d.drawImage(ImageIO.read(getClass().getResource("/img/properties.png")), dimension.width /2 - 32, dimension.height /2 - 32, 
+					64, 64, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,6 +91,7 @@ public class PropertiesContentEditor extends ContentEditor {
 		private JPanel contentPane;
 		private Locale locale;
 		private JLabel baloonsLabel;
+		private JButton backgroundChooser;
 		private boolean loaded = false;
 
 		public PropertiesEditor(int i, Locale lang) {
@@ -101,7 +105,7 @@ public class PropertiesContentEditor extends ContentEditor {
 			contentPane = new JPanel(new GridLayout(0, 2, 0, 5));
 			locale = lang;
 			
-			// TODO other properties: background, differentBaloonsForPumpedGood
+			// TODO other properties: //background//, differentBaloonsForPumpedGood
 			name = new JTextField();
 			description = new JTextField();
 			version = new JTextField();
@@ -124,10 +128,26 @@ public class PropertiesContentEditor extends ContentEditor {
 				baloons = new JFormattedTextField(NumberFormat.getIntegerInstance(Lang.getInstance().usedLocale()));
 				baloons.addActionListener(this);
 				baloons.setActionCommand("baloons");
+				
+				backgroundChooser = new JButton(Lang.getString("editor.props.background.button")) {
+					private static final long serialVersionUID = -6643838956810809841L;
+					
+					@Override
+					public Color getForeground() {
+						return new Color(0xFFFFFF - getBackground().getRGB());//Complementary color
+					}
+				};
+				backgroundChooser.addActionListener(this);
+				backgroundChooser.setActionCommand("background");
+                backgroundChooser.setContentAreaFilled(false);
+                backgroundChooser.setOpaque(true);
+				
 				contentPane.add(new JSeparator());//Left
 				contentPane.add(new JSeparator());//Right
 				contentPane.add(baloonsLabel = new JLabel(Lang.getString("editor.props.baloons")));
 				contentPane.add(baloons);
+				contentPane.add(new JLabel(Lang.getString("editor.props.background")));
+				contentPane.add(backgroundChooser);
 			}
 			add(contentPane, BorderLayout.NORTH);
 		}
@@ -140,6 +160,9 @@ public class PropertiesContentEditor extends ContentEditor {
 			if (baloons != null) {
 				setText(baloons, theme.getMetadata("baloons", locale));
 			}
+			if (backgroundChooser != null) {
+				backgroundChooser.setBackground(new Color(Integer.parseInt(theme.getMetadata("background", locale))));
+			}
 			loaded = true;
 		}
 		
@@ -150,6 +173,9 @@ public class PropertiesContentEditor extends ContentEditor {
 			theme.setMetadata("author", locale, author.getText());
 			if (baloons != null && baloonsLabel.getForeground() == Color.BLACK) {
 				theme.setMetadata("baloons", locale, baloons.getText());
+			}
+			if (backgroundChooser != null) {
+				theme.setMetadata("background", locale, "" + backgroundChooser.getBackground().getRGB());
 			}
 		}
 		
@@ -198,6 +224,9 @@ public class PropertiesContentEditor extends ContentEditor {
 						baloonsLabel.setForeground(Color.BLACK);
 					}
 				} catch (NumberFormatException ex) {}
+			} else if ("background".equals(e.getActionCommand())) {
+				backgroundChooser.setBackground(JColorChooser.showDialog(this, Lang.getString("editor.props.background.chooser"), 
+						backgroundChooser.getBackground()));
 			}
 			propertyChange();
 			editor.reload();

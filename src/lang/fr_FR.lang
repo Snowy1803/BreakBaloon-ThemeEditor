@@ -27,6 +27,8 @@ editor.props.version=Version :
 editor.props.baloons=Nombre de ballons :
 editor.props.baloons.toosmall=Sérieusement ?
 editor.props.baloons.toobig=Pour la fluidité du logiciel, le nombre de ballons est limité.
+editor.props.background=Couleur d'arrière-plan :
+editor.props.background.button=Cliquer pour changer
 
 props.lang.base=Base
 props.lang.base.tooltip=Propriétés qui sont les mêmes dans toutes les langues
