@@ -24,6 +24,9 @@ editor.props.name=Nom du thème :
 editor.props.description=Courte description :
 editor.props.author=Auteur :
 editor.props.version=Version :
+editor.props.baloons=Nombre de ballons :
+editor.props.baloons.toosmall=Sérieusement ?
+editor.props.baloons.toobig=Pour la fluidité du logiciel, le nombre de ballons est limité.
 
 props.lang.base=Base
 props.lang.base.tooltip=Propriétés qui sont les mêmes dans toutes les langues

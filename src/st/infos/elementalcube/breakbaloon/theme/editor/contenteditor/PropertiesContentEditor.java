@@ -5,6 +5,7 @@ import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
 import st.infos.elementalcube.snowylangapi.Lang;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -78,7 +79,6 @@ public class PropertiesContentEditor extends ContentEditor {
 		for (PropertiesEditor pe : langEditors) {
 			pe.updateFields();
 		}
-		editor.reload();
 	}
 	
 	private class PropertiesEditor extends JPanel implements ActionListener {
@@ -87,6 +87,7 @@ public class PropertiesContentEditor extends ContentEditor {
 		private JFormattedTextField baloons;
 		private JPanel contentPane;
 		private Locale locale;
+		private JLabel baloonsLabel;
 
 		public PropertiesEditor(int i, Locale lang) {
 			super(new BorderLayout());
@@ -120,9 +121,11 @@ public class PropertiesContentEditor extends ContentEditor {
 			contentPane.add(author);
 			if (baseLang == this) {
 				baloons = new JFormattedTextField(NumberFormat.getIntegerInstance(Lang.getInstance().usedLocale()));
+				baloons.addActionListener(this);
+				baloons.setActionCommand("baloons");
 				contentPane.add(new JSeparator());//Left
 				contentPane.add(new JSeparator());//Right
-				contentPane.add(new JLabel(Lang.getString("editor.props.baloons")));
+				contentPane.add(baloonsLabel = new JLabel(Lang.getString("editor.props.baloons")));
 				contentPane.add(baloons);
 			}
 			add(contentPane, BorderLayout.NORTH);
@@ -143,7 +146,7 @@ public class PropertiesContentEditor extends ContentEditor {
 			theme.setMetadata("description", locale, description.getText());
 			theme.setMetadata("version", locale, version.getText());
 			theme.setMetadata("author", locale, author.getText());
-			if (baloons != null) {
+			if (baloons != null && baloonsLabel.getForeground() == Color.BLACK) {
 				theme.setMetadata("baloons", locale, baloons.getText());
 			}
 		}
@@ -178,8 +181,24 @@ public class PropertiesContentEditor extends ContentEditor {
 				version.setEnabled(((JCheckBox) e.getSource()).isSelected());
 			} else if (e.getActionCommand().equals("editor.props.author")) {
 				author.setEnabled(((JCheckBox) e.getSource()).isSelected());
+			} else if ("baloons".equals(e.getActionCommand())) {
+				try {
+					if (Integer.parseInt(baloons.getText()) > 32) {
+						baloonsLabel.setText(Lang.getString("editor.props.baloons.toobig"));
+						baloonsLabel.setForeground(Color.RED);
+						return;
+					} else if (Integer.parseInt(baloons.getText()) < 1) {
+						baloonsLabel.setText(Lang.getString("editor.props.baloons.toosmall"));
+						baloonsLabel.setForeground(Color.RED);
+						return;
+					} else {
+						baloonsLabel.setText(Lang.getString("editor.props.baloons"));
+						baloonsLabel.setForeground(Color.BLACK);
+					}
+				} catch (NumberFormatException ex) {}
 			}
 			propertyChange();
+			editor.reload();
 		}
 		
 		private void updateFields() {

@@ -15,6 +15,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -102,9 +103,15 @@ public class BaloonImageContentEditor extends ContentEditor {
 			images = theme.openedGood;
 			break;
 		}
+		editors = Arrays.copyOf(editors, Integer.parseInt(theme.getMetadata("baloons", null)));
 		if (images != null) {
-			for (int i = 0; i < images.length; i++) {
-				editors[i].setImage(images[i]);
+			for (int i = 0; i < editors.length; i++) {
+				if (editors[i] == null) {
+					editors[i] = new DrawEditor(frame, new Dimension(75, 75));
+					editors[i].setToolbar(toolbar);
+				} else {
+					editors[i].setImage(images[i]);
+				}
 			}
 		}
 	}

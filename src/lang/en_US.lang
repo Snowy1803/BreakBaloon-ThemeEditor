@@ -20,6 +20,14 @@ editor.image.toolbar=Drawing tools
 editor.image.toolbar.color=Color
 editor.image.number=Baloon #%d
 
+editor.props.name=Theme name:
+editor.props.description=Small description:
+editor.props.author=Author:
+editor.props.version=Version:
+editor.props.baloons=Baloon count:
+editor.props.baloons.toosmall=Seriously?
+editor.props.baloons.toobig=For the program's fludity, the baloon count is limited.
+
 props.lang.base=Base
 props.lang.base.tooltip=Properties same in all languages
 props.lang.fr_FR=French
