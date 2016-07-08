@@ -12,14 +12,17 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
@@ -81,6 +84,7 @@ public class PropertiesContentEditor extends ContentEditor {
 	private class PropertiesEditor extends JPanel implements ActionListener {
 		private static final long serialVersionUID = 8013423756318123940L;
 		private JTextField name, description, version, author;
+		private JFormattedTextField baloons;
 		private JPanel contentPane;
 		private Locale locale;
 
@@ -114,6 +118,13 @@ public class PropertiesContentEditor extends ContentEditor {
 			contentPane.add(version);
 			contentPane.add(createLabel("editor.props.author"));
 			contentPane.add(author);
+			if (baseLang == this) {
+				baloons = new JFormattedTextField(NumberFormat.getIntegerInstance(Lang.getInstance().usedLocale()));
+				contentPane.add(new JSeparator());//Left
+				contentPane.add(new JSeparator());//Right
+				contentPane.add(new JLabel(Lang.getString("editor.props.baloons")));
+				contentPane.add(baloons);
+			}
 			add(contentPane, BorderLayout.NORTH);
 		}
 		
@@ -122,13 +133,19 @@ public class PropertiesContentEditor extends ContentEditor {
 			setText(description, theme.getMetadata("description", locale));
 			setText(version, theme.getMetadata("version", locale));
 			setText(author, theme.getMetadata("author", locale));
+			if (baloons != null) {
+				setText(baloons, theme.getMetadata("baloons", locale));
+			}
 		}
 		
 		public void save(BBTheme theme) {
 			theme.setMetadata("name", locale, name.getText());
-			theme.setMetadata("description", locale, name.getText());
-			theme.setMetadata("version", locale, name.getText());
-			theme.setMetadata("author", locale, name.getText());
+			theme.setMetadata("description", locale, description.getText());
+			theme.setMetadata("version", locale, version.getText());
+			theme.setMetadata("author", locale, author.getText());
+			if (baloons != null) {
+				theme.setMetadata("baloons", locale, baloons.getText());
+			}
 		}
 		
 		private void setText(JTextField text, String value) {
