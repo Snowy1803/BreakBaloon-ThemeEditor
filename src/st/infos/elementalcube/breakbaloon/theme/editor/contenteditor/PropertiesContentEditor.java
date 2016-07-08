@@ -88,6 +88,7 @@ public class PropertiesContentEditor extends ContentEditor {
 		private JPanel contentPane;
 		private Locale locale;
 		private JLabel baloonsLabel;
+		private boolean loaded = false;
 
 		public PropertiesEditor(int i, Locale lang) {
 			super(new BorderLayout());
@@ -100,7 +101,7 @@ public class PropertiesContentEditor extends ContentEditor {
 			contentPane = new JPanel(new GridLayout(0, 2, 0, 5));
 			locale = lang;
 			
-			// TODO other properties: baloons, background, differentBaloonsForPumpedGood
+			// TODO other properties: background, differentBaloonsForPumpedGood
 			name = new JTextField();
 			description = new JTextField();
 			version = new JTextField();
@@ -139,6 +140,7 @@ public class PropertiesContentEditor extends ContentEditor {
 			if (baloons != null) {
 				setText(baloons, theme.getMetadata("baloons", locale));
 			}
+			loaded = true;
 		}
 		
 		public void save(BBTheme theme) {
@@ -153,7 +155,7 @@ public class PropertiesContentEditor extends ContentEditor {
 		
 		private void setText(JTextField text, String value) {
 			Component c = contentPane.getComponent(Arrays.asList(contentPane.getComponents()).indexOf(text) - 1);
-			if (c instanceof JCheckBox) {
+			if (c instanceof JCheckBox && !loaded) {
 				((JCheckBox) c).setSelected(value != null);
 				text.setEnabled(value != null);
 			}
