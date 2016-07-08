@@ -95,7 +95,7 @@ public class PropertiesContentEditor extends ContentEditor {
 			contentPane = new JPanel(new GridLayout(0, 2, 0, 5));
 			locale = lang;
 			
-			// TODO other properties
+			// TODO other properties: baloons, background, differentBaloonsForPumpedGood
 			name = new JTextField();
 			description = new JTextField();
 			version = new JTextField();
