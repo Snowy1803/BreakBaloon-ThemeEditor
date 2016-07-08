@@ -2,6 +2,7 @@ package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
 import st.infos.elementalcube.breakbaloon.theme.editor.BBTheme;
 import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
+import st.infos.elementalcube.snowylangapi.Lang;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -164,6 +165,10 @@ public class BaloonImageContentEditor extends ContentEditor {
 			for (int i = 0; i < editors.length; i++) {
 				g2d.setColor(pane.getBottomComponent() == editors[i] ? Color.LIGHT_GRAY : hover == i ? new Color(240, 240, 240) : Color.WHITE);
 				g2d.fillRect(i * 100, 0, (i + 1) * 100, getHeight());
+				g2d.drawImage(editors[i].getImage(), i * 100 + (50 - editors[i].getImage().getWidth() / 2), 0, null);
+				g2d.setColor(Color.BLACK);
+				String s = Lang.getString("editor.image.number", i + 1);
+				g2d.drawString(s, i * 100 + (int) (50 - g2d.getFont().getStringBounds(s, g2d.getFontRenderContext()).getWidth() / 2), getHeight() - 5);
 			}
 		}
 		

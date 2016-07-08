@@ -83,6 +83,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		last = null;
+		editor.repaint();
 	}
 	
 	@Override

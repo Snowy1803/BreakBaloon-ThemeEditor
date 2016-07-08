@@ -18,6 +18,7 @@ editor.sound.wpump=Son (Ballon correct)
 
 editor.image.toolbar=Outils de dessin
 editor.image.toolbar.color=Couleur
+editor.image.number=Ballon n°%d
 
 props.lang.base=Base
 props.lang.base.tooltip=Propriétés qui sont les mêmes dans toutes les langues
