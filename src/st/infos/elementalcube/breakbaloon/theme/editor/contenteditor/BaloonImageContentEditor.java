@@ -1,30 +1,46 @@
 package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
+import st.infos.elementalcube.breakbaloon.theme.editor.BBTheme;
 import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 public class BaloonImageContentEditor extends ContentEditor {
 	private static final long serialVersionUID = 6556988077515024109L;
 	private EnumBaloonType type;
-	private DrawEditor editor;
+	private DrawEditor[] editors;
 	private ImageEditorToolbar toolbar;
+	private Editor frame;
+	private JSplitPane pane;
 	
 	public BaloonImageContentEditor(Editor editor, String name, EnumBaloonType type) {
 		super(name);
 		setLayout(new BorderLayout());
 		this.type = type;
-		this.editor = new DrawEditor(editor, new Dimension(75, 75));
-		this.toolbar = new ImageEditorToolbar(this.editor);
-		JSplitPane pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JPanel(), this.editor);
+		this.toolbar = new ImageEditorToolbar();
+		this.frame = editor;
+		editors = new DrawEditor[Integer.parseInt(editor.theme.getMetadata("baloons", null))];
+		constructEditors();
+		JScrollPane selector = new JScrollPane(new ImageSelection());
+		selector.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, selector, this.editors[0]);
 		pane.setContinuousLayout(true);
+		pane.setResizeWeight(0);
+		pane.setEnabled(false);
 		add(pane, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.SOUTH);
 	}
@@ -40,6 +56,51 @@ public class BaloonImageContentEditor extends ContentEditor {
 		}
 	}
 	
+	public void constructEditors() {
+		for (int i = 0; i < editors.length; i++) {
+			editors[i] = new DrawEditor(frame, new Dimension(75, 75));
+			editors[i].setToolbar(toolbar);
+		}
+	}
+
+	@Override
+	public void saveToBBTheme(BBTheme theme) {
+		BufferedImage[] images = new BufferedImage[editors.length];
+		for (int i = 0; i < editors.length; i++) {
+			images[i] = editors[i].getImage();
+		}
+		switch (type) {
+		case CLOSED:
+			theme.closed = images;
+			break;
+		case OPENED:
+			theme.opened = images;
+			break;
+		case OPENED_GOOD:
+			theme.openedGood = images;
+			break;
+		}
+	}
+
+	@Override
+	public void loadFromBBTheme(BBTheme theme) {
+		BufferedImage[] images = new BufferedImage[0];
+		switch (type) {
+		case CLOSED:
+			images = theme.closed;
+			break;
+		case OPENED:
+			images = theme.opened;
+			break;
+		case OPENED_GOOD:
+			images = theme.openedGood;
+			break;
+		}
+		for (int i = 0; i < images.length; i++) {
+			editors[i].setImage(images[i]);
+		}
+	}
+	
 	public static enum EnumBaloonType {
 		CLOSED("closed"), OPENED("opened"), OPENED_GOOD("openedGood");
 		
@@ -47,6 +108,83 @@ public class BaloonImageContentEditor extends ContentEditor {
 		
 		private EnumBaloonType(String langKey) {
 			this.langKey = langKey;
+		}
+	}
+	
+	private class ImageSelection extends JPanel implements MouseListener, MouseMotionListener {
+		private static final long serialVersionUID = 3672102224710209295L;
+		private int hover;
+		
+		public ImageSelection() {
+			addMouseListener(this);
+			addMouseMotionListener(this);
+		}
+		
+		@Override
+		public void mouseClicked(MouseEvent e) {}
+
+		@Override
+		public void mousePressed(MouseEvent e) {}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			int index = e.getX() / 100;
+			if (index < editors.length) {
+				pane.setBottomComponent(editors[index]);
+			}
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			hover = e.getX() / 100;
+			repaint();
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			hover = -1;
+			repaint();
+		}
+
+		@Override
+		public void mouseDragged(MouseEvent e) {}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			hover = e.getX() / 100;
+			repaint();
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(0, 0, getWidth(), getHeight());
+			for (int i = 0; i < editors.length; i++) {
+				g2d.setColor(pane.getBottomComponent() == editors[i] ? Color.LIGHT_GRAY : hover == i ? new Color(240, 240, 240) : Color.WHITE);
+				g2d.fillRect(i * 100, 0, (i + 1) * 100, getHeight());
+			}
+		}
+		
+		@Override
+		public int getWidth() {
+			return 100 * editors.length;
+		}
+		
+		@Override
+		public Dimension getMinimumSize() {
+			return getPreferredSize();
+		}
+		
+		@Override
+		public Dimension getPreferredSize() {
+			return new Dimension(getWidth(), 100);
+		}
+		
+		@Override
+		public Dimension getMaximumSize() {
+			return getMinimumSize();
 		}
 	}
 }
