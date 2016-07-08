@@ -11,12 +11,21 @@ import java.util.Locale;
 import java.util.Properties;
 
 public class BBTheme {
-	public final Properties properties;
+	private final Properties properties;
 	public BufferedImage[] opened, openedGood, closed;
 	public BufferedImage icon, wicon, cursor;
 	
 	public BBTheme() {
 		this.properties = new Properties();
+		setDefaultValueForMetadata("name", null, "");
+		setDefaultValueForMetadata("description", Locale.FRANCE, "Created with BreakBaloon Theme Editor");
+		setDefaultValueForMetadata("description", Locale.US, "Créé avec BreakBaloon Theme Editor");
+		setDefaultValueForMetadata("description", Locale.forLanguageTag("da-DK"), "Oprettet med BreakBaloon Theme Editor");
+		setDefaultValueForMetadata("author", null, System.getProperty("user.name"));
+		setDefaultValueForMetadata("version", null, "1.0");
+		setDefaultValueForMetadata("baloons", null, "" + 3);
+		setDefaultValueForMetadata("background", null, "" + 0xFFFFFF);
+		setDefaultValueForMetadata("different-baloon-pumped-good", null, "" + false);
 	}
 
 	public BBTheme(Properties properties) {
@@ -46,6 +55,12 @@ public class BBTheme {
 			properties.setProperty(metadata.toUpperCase(), value);
 		} else {
 			properties.setProperty(metadata.toUpperCase() + "_" + LangLoader.checkLocale(locale.toString()), value);
+		}
+	}
+	
+	public void setDefaultValueForMetadata(String metadata, Locale locale, String value) {
+		if (properties.getProperty(metadata.toUpperCase()) == null) {
+			setMetadata(metadata, locale, value);
 		}
 	}
 }

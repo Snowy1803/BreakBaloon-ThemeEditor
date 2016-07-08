@@ -1,6 +1,5 @@
 package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
-import st.infos.elementalcube.breakbaloon.theme.editor.BBTheme;
 import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
 
 import java.awt.Color;
@@ -26,9 +25,9 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	private static final long serialVersionUID = -5583820906102563391L;
 	private BufferedImage image;
 	private int zoomLevel = 5;
-	private Color currentColor = Color.BLACK;
 	private Point last;
 	private Editor editor;
+	private ImageEditorToolbar toolbar;
 	
 	public DrawEditor(Editor editor, Dimension imageDimension) {
 		setTransferHandler(new ImageEditorTransferHandler(this));
@@ -50,8 +49,12 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		g.drawImage(image, 0, 0, image.getWidth() * getZoomLevel(), image.getHeight() * zoomLevel, null);
 	}
 	
-	public void clear(BBTheme theme) {
-		String prop = theme.properties.getProperty("BACKGROUND");
+	public void setToolbar(ImageEditorToolbar toolbar) {
+		this.toolbar = toolbar;
+	}
+	
+	public void clear() {
+		String prop = editor.theme.getMetadata("background", null);
 		int rgb = prop == null ? Color.WHITE.getRGB() : Integer.parseInt(prop);
 		for (int i = 0; i < image.getWidth(); i++) {
 	        for (int j = 0; j < image.getHeight(); j++) {
@@ -61,20 +64,12 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		repaint();
 	}
 	
-	public Image getImage() {
+	public BufferedImage getImage() {
 		return image;
 	}
 	
 	public void setImage(BufferedImage image) {
 		this.image = image;
-	}
-	
-	public void setColor(Color currentColor) {
-		this.currentColor = currentColor;
-	}
-	
-	public Color getCurrentColor() {
-		return currentColor;
 	}
 	
 	@Override
@@ -108,14 +103,14 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		Point scaled = new Point(point.x / zoomLevel, point.y / zoomLevel);
 		if (last == null) last = scaled;
 		try {
-			drawLineImpl(new Point(scaled), leftClick ? currentColor.getRGB() : getBackgroundColor());
+			drawLineImpl(new Point(scaled), leftClick ? toolbar.currentColor.getRGB() : getBackgroundColor());
 		} catch (ArrayIndexOutOfBoundsException ex) {}
 		repaint();
 		last = scaled;
 	}
 	
 	private int getBackgroundColor() {
-		String prop = editor.theme.properties.getProperty("BACKGROUND");
+		String prop = editor.theme.getMetadata("background", null);
 		return prop == null ? Color.WHITE.getRGB() : Integer.parseInt(prop);
 	}
 

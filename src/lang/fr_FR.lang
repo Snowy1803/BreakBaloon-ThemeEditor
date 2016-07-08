@@ -18,3 +18,12 @@ editor.sound.wpump=Son (Ballon correct)
 
 editor.image.toolbar=Outils de dessin
 editor.image.toolbar.color=Couleur
+
+props.lang.base=Base
+props.lang.base.tooltip=Propriétés qui sont les mêmes dans toutes les langues
+props.lang.fr_FR=Français
+props.lang.fr_FR.tooltip=Propriétés en français
+props.lang.en_US=Anglais
+props.lang.en_US.tooltip=Propriétés en anglais
+props.lang.da_DK=Danois
+props.lang.da_DK.tooltip=Propriétés en danois

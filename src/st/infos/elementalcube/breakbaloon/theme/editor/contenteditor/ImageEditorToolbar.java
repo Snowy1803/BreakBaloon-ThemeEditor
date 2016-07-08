@@ -21,19 +21,18 @@ import javax.swing.JToolBar;
 public class ImageEditorToolbar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 2792625817326549362L;
 	private static final String BUTTON_COLOR = "color";
-	private DrawEditor editor;
 	private JButton color;
+	public Color currentColor = Color.BLACK;
 	
-	public ImageEditorToolbar(DrawEditor editor) {
+	public ImageEditorToolbar() {
 		super(Lang.getString("editor.image.toolbar"));
-		this.editor = editor;
 		this.color = addButton(BUTTON_COLOR);
 		adaptColorButton();
 	}
 	
 	private void adaptColorButton() {
 		try {
-			BufferedImageOp lookup = new LookupOp(new ColorMapper(Color.WHITE, editor.getCurrentColor()), null);
+			BufferedImageOp lookup = new LookupOp(new ColorMapper(Color.WHITE, currentColor), null);
 			BufferedImage convertedImage = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_COLOR + ".png")), null);
 			color.setIcon(new ImageIcon(convertedImage.getScaledInstance(32, 32, BufferedImage.SCALE_SMOOTH)));
 		} catch (IOException e) {
@@ -53,7 +52,7 @@ public class ImageEditorToolbar extends JToolBar implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (BUTTON_COLOR.equals(e.getActionCommand())) {
-			editor.setColor(JColorChooser.showDialog(editor, Lang.getString("editor.image.toolbar." + BUTTON_COLOR), editor.getCurrentColor()));
+			currentColor = JColorChooser.showDialog(null, Lang.getString("editor.image.toolbar." + BUTTON_COLOR), currentColor);
 			adaptColorButton();
 		}
 	}
