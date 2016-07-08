@@ -1,0 +1,30 @@
+lang.id=en_US
+lang.text=English (US)
+
+windows.assoc.adminNeeded.title=Cannot associate
+windows.assoc.adminNeeded.text=You must execute the program in admin mode to activate file association.
+
+editor.name=BreakBaloon Theme Editor
+editor.name.unsaved=* BreakBaloon Theme Editor
+editor.saveUnsavedChanges.title=Save
+editor.saveUnsavedChanges.text=Do you want to save unsaved changes before close the theme editor?
+
+editor.properties=Properties
+editor.baloon.closed=Baloons
+editor.baloon.opened=Popped baloons
+editor.baloon.openedGood=Correct baloons
+editor.sound.pump=Sound
+editor.sound.wpump=Sound (Correct baloon)
+
+editor.image.toolbar=Drawing tools
+editor.image.toolbar.color=Color
+editor.image.number=Baloon #%d
+
+props.lang.base=Base
+props.lang.base.tooltip=Properties same in all languages
+props.lang.fr_FR=French
+props.lang.fr_FR.tooltip=Properties in french
+props.lang.en_US=English
+props.lang.en_US.tooltip=Properties en english
+props.lang.da_DK=Danish
+props.lang.da_DK.tooltip=Properties en danish
