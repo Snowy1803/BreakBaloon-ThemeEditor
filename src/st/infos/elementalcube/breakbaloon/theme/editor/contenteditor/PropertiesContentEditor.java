@@ -2,6 +2,7 @@ package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
 import st.infos.elementalcube.breakbaloon.theme.editor.BBTheme;
 import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
+import st.infos.elementalcube.breakbaloon.theme.editor.LeftMenuComponent;
 import st.infos.elementalcube.snowylangapi.Lang;
 
 import java.awt.BorderLayout;
@@ -172,6 +173,9 @@ public class PropertiesContentEditor extends ContentEditor {
 			}
 			if (dbfpg != null) {
 				dbfpg.setSelected(Boolean.parseBoolean(theme.getMetadata("different-baloon-pumped-good", locale)));
+				for (Component cmp : editor.getMenuComponents()) {
+					((LeftMenuComponent) cmp).dbfpgPropertyChanged(dbfpg.isSelected());
+				}
 			}
 			loaded = true;
 		}
@@ -239,6 +243,10 @@ public class PropertiesContentEditor extends ContentEditor {
 			} else if ("background".equals(e.getActionCommand())) {
 				backgroundChooser.setBackground(JColorChooser.showDialog(this, Lang.getString("editor.props.background.chooser"), 
 						backgroundChooser.getBackground()));
+			} else if ("dbfpg".equals(e.getActionCommand())) {
+				for (Component cmp : editor.getMenuComponents()) {
+					((LeftMenuComponent) cmp).dbfpgPropertyChanged(dbfpg.isSelected());
+				}
 			}
 			propertyChange();
 			editor.reload();

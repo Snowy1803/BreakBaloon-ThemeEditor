@@ -24,7 +24,6 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 	private LeftMenuComponent(Editor editor, ContentEditor action) {
 		this.editor = editor;
 		this.action = action;
-		action.loadFromBBTheme(editor.theme);
 		addMouseListener(this);
 		setMinimumSize(new Dimension(100, 100));
 		setMaximumSize(new Dimension(300, 300));
@@ -58,7 +57,7 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		editor.setContentEditor(editor.getContentEditor() == action ? null : action);
+		editor.setContentEditor(!isEnabled() ? null : editor.getContentEditor() == action ? null : action);
 		editor.repaint();
 	}
 
@@ -76,5 +75,23 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 
 	public ContentEditor getContentEditor() {
 		return action;
+	}
+
+	public void dbfpgPropertyChanged(boolean selected) {
+		if (action instanceof BaloonImageContentEditor) {
+			if (((BaloonImageContentEditor) action).getBaloonType() == EnumBaloonType.OPENED_GOOD) {
+				setEnabled(selected);
+				if (selected) {
+					setMinimumSize(new Dimension(100, 100));
+					setMaximumSize(new Dimension(300, 300));
+					setPreferredSize(new Dimension(150, 150));
+				} else {
+					setMinimumSize(new Dimension(0, 0));
+					setMaximumSize(new Dimension(0, 0));
+					setPreferredSize(new Dimension(0, 0));
+				}
+				revalidate();
+			}
+		}
 	}
 }

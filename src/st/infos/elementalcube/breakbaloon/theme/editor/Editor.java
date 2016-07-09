@@ -58,6 +58,10 @@ public class Editor extends JFrame {
 		menu.setMaximumSize(new Dimension(300, 200 * menu.getComponentCount()));
 		container = new JPanel(new GridLayout(1, 1));
 		
+		for (Component component : menu.getComponents()) {
+			((LeftMenuComponent) component).getContentEditor().loadFromBBTheme(theme);
+		}
+		
 		JSplitPane contentPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(menu), new JScrollPane(container));
 		contentPane.setContinuousLayout(true);
 		contentPane.setDividerLocation(200);
@@ -129,5 +133,9 @@ public class Editor extends JFrame {
 		for (Component leftPane : menu.getComponents()) {
 			((LeftMenuComponent) leftPane).getContentEditor().loadFromBBTheme(theme);
 		}
+	}
+
+	public Component[] getMenuComponents() {
+		return menu.getComponents();
 	}
 }

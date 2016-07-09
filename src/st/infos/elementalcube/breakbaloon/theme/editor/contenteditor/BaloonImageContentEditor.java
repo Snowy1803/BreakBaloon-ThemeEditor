@@ -116,6 +116,10 @@ public class BaloonImageContentEditor extends ContentEditor {
 		}
 	}
 	
+	public EnumBaloonType getBaloonType() {
+		return type;
+	}
+	
 	public static enum EnumBaloonType {
 		CLOSED("closed"), OPENED("opened"), OPENED_GOOD("openedGood");
 		
