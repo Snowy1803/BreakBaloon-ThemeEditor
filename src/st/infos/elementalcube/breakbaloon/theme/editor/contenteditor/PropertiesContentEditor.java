@@ -170,6 +170,9 @@ public class PropertiesContentEditor extends ContentEditor {
 			if (backgroundChooser != null) {
 				backgroundChooser.setBackground(new Color(Integer.parseInt(theme.getMetadata("background", locale))));
 			}
+			if (dbfpg != null) {
+				dbfpg.setSelected(Boolean.parseBoolean(theme.getMetadata("different-baloon-pumped-good", locale)));
+			}
 			loaded = true;
 		}
 		
@@ -183,6 +186,9 @@ public class PropertiesContentEditor extends ContentEditor {
 			}
 			if (backgroundChooser != null) {
 				theme.setMetadata("background", locale, "" + backgroundChooser.getBackground().getRGB());
+			}
+			if (dbfpg != null) {
+				theme.setMetadata("different-baloon-pumped-good", locale, "" + dbfpg.isSelected());
 			}
 		}
 		
