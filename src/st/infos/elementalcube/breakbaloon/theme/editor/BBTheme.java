@@ -14,6 +14,7 @@ public class BBTheme {
 	private final Properties properties;
 	public BufferedImage[] opened, openedGood, closed;
 	public BufferedImage icon, wicon, cursor;
+	public byte[] pump, wpump;
 	
 	public BBTheme() {
 		this.properties = new Properties();

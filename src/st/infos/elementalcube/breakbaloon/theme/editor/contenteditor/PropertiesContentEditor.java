@@ -93,6 +93,7 @@ public class PropertiesContentEditor extends ContentEditor {
 		private JLabel baloonsLabel;
 		private JButton backgroundChooser;
 		private boolean loaded = false;
+		private JCheckBox dbfpg;
 
 		public PropertiesEditor(int i, Locale lang) {
 			super(new BorderLayout());
@@ -105,7 +106,6 @@ public class PropertiesContentEditor extends ContentEditor {
 			contentPane = new JPanel(new GridLayout(0, 2, 0, 5));
 			locale = lang;
 			
-			// TODO other properties: //background//, differentBaloonsForPumpedGood
 			name = new JTextField();
 			description = new JTextField();
 			version = new JTextField();
@@ -141,6 +141,11 @@ public class PropertiesContentEditor extends ContentEditor {
 				backgroundChooser.setActionCommand("background");
                 backgroundChooser.setContentAreaFilled(false);
                 backgroundChooser.setOpaque(true);
+                
+                /* Different baloon for pumped good */
+                dbfpg = new JCheckBox(Lang.getString("editor.props.dbfpg"));
+                dbfpg.setActionCommand("dbfpg");
+                dbfpg.addActionListener(this);
 				
 				contentPane.add(new JSeparator());//Left
 				contentPane.add(new JSeparator());//Right
@@ -148,6 +153,8 @@ public class PropertiesContentEditor extends ContentEditor {
 				contentPane.add(baloons);
 				contentPane.add(new JLabel(Lang.getString("editor.props.background")));
 				contentPane.add(backgroundChooser);
+				contentPane.add(dbfpg);
+				contentPane.add(new JPanel());//Nothing to right
 			}
 			add(contentPane, BorderLayout.NORTH);
 		}
@@ -192,7 +199,6 @@ public class PropertiesContentEditor extends ContentEditor {
 			if (baseLang == this) {
 				JCheckBox check = new JCheckBox(Lang.getString(label));
 				check.addActionListener(this);
-				check.setSelected(true);
 				check.setActionCommand(label);
 				return check;
 			}

@@ -29,6 +29,7 @@ editor.props.baloons.toosmall=Seriously?
 editor.props.baloons.toobig=For the program's fludity, the baloon count is limited.
 editor.props.background=Background color:
 editor.props.background.button=Click to change
+editor.props.dbfpg=Use a different image when the baloon is correct
 
 props.lang.base=Base
 props.lang.base.tooltip=Properties same in all languages
