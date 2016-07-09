@@ -15,6 +15,9 @@ editor.baloon.opened=Ballons crevés
 editor.baloon.openedGood=Ballons corrects
 editor.sound.pump=Son
 editor.sound.wpump=Son (Ballon correct)
+editor.sound.drag=Glissez un son ici pour l'associer au thème
+editor.sound.or=ou
+editor.sound.useDefault=Utiliser le son par défaut
 
 editor.image.toolbar=Outils de dessin
 editor.image.toolbar.color=Couleur

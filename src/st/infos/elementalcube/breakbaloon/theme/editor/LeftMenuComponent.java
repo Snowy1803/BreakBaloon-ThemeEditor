@@ -5,6 +5,7 @@ import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.BaloonImage
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.ContentEditor;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.PropertiesContentEditor;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.SoundContentEditor;
+import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.SoundContentEditor.EnumSoundType;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,8 +37,8 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 		list[1] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.closed", EnumBaloonType.CLOSED));
 		list[2] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.opened", EnumBaloonType.OPENED));
 		list[3] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.openedGood", EnumBaloonType.OPENED_GOOD));
-		list[4] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.pump"));
-		list[5] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.wpump"));
+		list[4] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.pump", EnumSoundType.PUMP));
+		list[5] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.wpump", EnumSoundType.WPUMP));
 		return list;
 	}
 	

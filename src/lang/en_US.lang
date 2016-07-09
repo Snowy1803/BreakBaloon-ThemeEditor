@@ -15,6 +15,9 @@ editor.baloon.opened=Popped baloons
 editor.baloon.openedGood=Correct baloons
 editor.sound.pump=Sound
 editor.sound.wpump=Sound (Correct baloon)
+editor.sound.drag=Drag a sound here to link it to the theme.
+editor.sound.or=or
+editor.sound.useDefault=Use default sound
 
 editor.image.toolbar=Drawing tools
 editor.image.toolbar.color=Color
