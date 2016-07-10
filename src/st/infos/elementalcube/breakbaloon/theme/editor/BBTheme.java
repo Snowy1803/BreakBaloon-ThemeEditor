@@ -73,7 +73,9 @@ public class BBTheme {
 	public void saveToDirectory(File file) throws IOException {
 		PrintWriter pw = new PrintWriter(file);
 		for (Object prop : properties.keySet()) {
-			pw.println(prop + "=" + properties.getProperty(prop.toString()));
+			if (!properties.getProperty(prop.toString()).isEmpty()) {
+				pw.println(prop + "=" + properties.getProperty(prop.toString()));
+			}
 		}
 		pw.close();
 		
