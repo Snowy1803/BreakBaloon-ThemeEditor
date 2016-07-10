@@ -2,6 +2,7 @@ package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
 import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -37,11 +38,11 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
-		image = new BufferedImage(imageDimension.width, imageDimension.height, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(imageDimension.width, imageDimension.height, BufferedImage.TYPE_INT_ARGB);
 		this.editor = editor;
 		for (int i = 0; i < image.getWidth(); i++) {
 	        for (int j = 0; j < image.getHeight(); j++) {
-	            image.setRGB(i, j, Color.white.getRGB());
+	            image.setRGB(i, j, getBackgroundColor());
 	        }
 	    }
 	}
@@ -49,7 +50,10 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(image, 0, 0, image.getWidth() * getZoomLevel(), image.getHeight() * zoomLevel, null);
+		((Graphics2D) g).setStroke(new BasicStroke(2)); 
+		g.setColor(Color.BLACK);
+		g.drawRect(0, 0, image.getWidth() * zoomLevel, image.getHeight() * zoomLevel);
+		g.drawImage(image, 0, 0, image.getWidth() * zoomLevel, image.getHeight() * zoomLevel, null);
 	}
 	
 	public void setToolbar(ImageEditorToolbar toolbar) {
@@ -113,7 +117,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	}
 	
 	private int getBackgroundColor() {
-		return Integer.parseInt(editor.theme.getMetadata("background", null, "" + 0xFFFFFF));
+		return new Color(0, 0, 0, 0).getRGB();
 	}
 
 	private void drawLineImpl(Point point, int color) {
