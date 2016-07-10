@@ -6,23 +6,32 @@ import st.infos.elementalcube.snowylangapi.Lang;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Editor extends JFrame {
 	private static final long serialVersionUID = -247298518651532746L;
 	public BBTheme theme;
 	private boolean saved = true;
-	private File saveDirectory;
+	private File saveFile;
 	private JPanel menu, container;
 	
 	public Editor(String file) {
@@ -66,10 +75,74 @@ public class Editor extends JFrame {
 		contentPane.setContinuousLayout(true);
 		contentPane.setDividerLocation(200);
 		setContentPane(contentPane);
+		setJMenuBar(constructJMenuBar());
 		setSize(900, 650);
 		setLocationRelativeTo(null);
 		addWindowListener(new WindowCloseListener());
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	}
+
+	private JMenuBar constructJMenuBar() {
+		JMenuBar bar = new JMenuBar();
+		
+		JMenu file = new JMenu(Lang.getString("menu.file"));
+		
+		JMenuItem newWindow = new JMenuItem(Lang.getString("menu.file.new.window")),
+				open = new JMenuItem(Lang.getString("menu.file.open")),
+				save = new JMenuItem(Lang.getString("menu.file.save")),
+				saveAs = new JMenuItem(Lang.getString("menu.file.saveAs")),
+				exportZip = new JMenuItem(Lang.getString("menu.file.export.zip"));
+		
+		newWindow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+		saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+		exportZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+		
+		open.setEnabled(false);
+		exportZip.setEnabled(false);
+		
+		newWindow.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new Editor().setVisible(true);
+			}
+		});
+		open.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				open();
+			}
+		});
+		save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				save();
+			}
+		});
+		saveAs.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveAs();
+			}
+		});
+		exportZip.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				exportZip();
+			}
+		});
+		
+		file.add(newWindow);
+		file.add(open);
+		file.addSeparator();
+		file.add(save);
+		file.add(saveAs);
+		file.add(exportZip);
+		
+		bar.add(file);
+		
+		return bar;
 	}
 
 	public void setContentEditor(ContentEditor content) {
@@ -96,12 +169,35 @@ public class Editor extends JFrame {
 	
 	// Editor actions
 	
+	public void open() {
+		//TODO
+	}
+	
 	public void save() {
-		// TODO save
+		if (saveFile == null) {
+			saveAs();
+			return;
+		}
+		reload();
+		try {
+			theme.saveToDirectory(saveFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void saveAs() {
-		// TODO saveAs
+		JFileChooser chooser = new JFileChooser(saveFile);
+		chooser.setFileFilter(new FileNameExtensionFilter(Lang.getString("filefilter.bbtheme"), "bbtheme"));
+		chooser.showSaveDialog(this);
+		if (chooser.getSelectedFile() != null) {
+			saveFile = chooser.getSelectedFile();
+			save();
+		}
+	}
+	
+	public void exportZip() {
+		//TODO
 	}
 	
 	public void quit() {

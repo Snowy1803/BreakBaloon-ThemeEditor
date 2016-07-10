@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.Locale;
 import java.util.Properties;
@@ -37,7 +38,6 @@ public class BBTheme {
 	}
 
 	public static BBTheme parseTheme(File file) throws IOException {
-		System.out.println("Parsing bbtheme");
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String line;
 		Properties properties = new Properties();
@@ -58,12 +58,38 @@ public class BBTheme {
 			}
 		}
 		theme.cursor = ImageIO.read(new File(file.getParentFile(), "cursor.gif"));
-		theme.icon = ImageIO.read(new File(file.getParentFile(), file.getParentFile().getName() + ".png"));
+		theme.icon = ImageIO.read(new File(file.getParentFile(), file.getName().substring(0, file.getName().length() - 8) + ".png"));
 		theme.wicon = ImageIO.read(new File(file.getParentFile(), "wicon.png"));
 		theme.pump = Files.readAllBytes(new File(file.getParentFile(), "pump.wav").toPath());
 		theme.wpump = Files.readAllBytes(new File(file.getParentFile(), "wpump.wav").toPath());
-		System.out.println("Parsed theme successfully");
 		return theme;
+	}
+	
+	/**
+	 * Save the theme to disk
+	 * @param file	the BBTHEME emplacement
+	 * @throws IOException 
+	 */
+	public void saveToDirectory(File file) throws IOException {
+		PrintWriter pw = new PrintWriter(file);
+		for (Object prop : properties.keySet()) {
+			pw.println(prop + "=" + properties.getProperty(prop.toString()));
+		}
+		pw.close();
+		
+		int baloons = Integer.parseInt(getMetadata("baloons", null, "" + closed.length));
+		for (int i = 0; i < baloons; i++) {
+			ImageIO.write(closed[i], "png", new File(file.getParentFile(), "closed" + i + ".png"));
+			ImageIO.write(opened[i], "png", new File(file.getParentFile(), "opened" + i + ".png"));
+			if (Boolean.parseBoolean(getMetadata("different-baloon-pumped-good", null, "" + false))) {
+				ImageIO.write(openedGood[i], "png", new File(file.getParentFile(), "opened" + i + "-good.png"));
+			}
+		}
+		ImageIO.write(cursor, "gif", new File(file.getParentFile(), "cursor.gif"));
+		ImageIO.write(icon, "png", new File(file.getParentFile(), file.getName().substring(0, file.getName().length() - 8) + ".png"));
+		ImageIO.write(wicon, "png", new File(file.getParentFile(), "wicon.png"));
+		Files.write(new File(file.getParentFile(), "pump.wav").toPath(), pump);
+		Files.write(new File(file.getParentFile(), "wpump.wav").toPath(), wpump);
 	}
 	
 	public String getMetadata(String metadata, Locale locale, String defaultValue) {
