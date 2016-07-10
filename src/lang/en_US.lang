@@ -42,3 +42,12 @@ props.lang.en_US=English
 props.lang.en_US.tooltip=Properties en english
 props.lang.da_DK=Danish
 props.lang.da_DK.tooltip=Properties en danish
+
+menu.file=File
+menu.file.new.window=New window
+menu.file.open=Open
+menu.file.save=Save
+menu.file.saveAs=Save as...
+menu.file.export.zip=Export as .zip
+
+filefilter.bbtheme=Theme configuration file (.bbtheme)
