@@ -54,8 +54,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	}
 	
 	public void clear() {
-		String prop = editor.theme.getMetadata("background", null);
-		int rgb = prop == null ? Color.WHITE.getRGB() : Integer.parseInt(prop);
+		int rgb = Integer.parseInt(editor.theme.getMetadata("background", null, "" + 0xFFFFFF));
 		for (int i = 0; i < image.getWidth(); i++) {
 	        for (int j = 0; j < image.getHeight(); j++) {
 	            image.setRGB(i, j, rgb);
@@ -111,8 +110,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	}
 	
 	private int getBackgroundColor() {
-		String prop = editor.theme.getMetadata("background", null);
-		return prop == null ? Color.WHITE.getRGB() : Integer.parseInt(prop);
+		return Integer.parseInt(editor.theme.getMetadata("background", null, "" + 0xFFFFFF));
 	}
 
 	private void drawLineImpl(Point point, int color) {

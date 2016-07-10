@@ -38,7 +38,7 @@ public class BaloonImageContentEditor extends ContentEditor {
 		this.type = type;
 		this.toolbar = new ImageEditorToolbar();
 		this.frame = editor;
-		editors = new DrawEditor[Integer.parseInt(editor.theme.getMetadata("baloons", null))];
+		editors = new DrawEditor[Integer.parseInt(editor.theme.getMetadata("baloons", null, "" + 1))];
 		constructEditors();
 		JScrollPane selector = new JScrollPane(new ImageSelection());
 		selector.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -103,7 +103,7 @@ public class BaloonImageContentEditor extends ContentEditor {
 			images = theme.openedGood;
 			break;
 		}
-		editors = Arrays.copyOf(editors, Integer.parseInt(theme.getMetadata("baloons", null)));
+		editors = Arrays.copyOf(editors, Integer.parseInt(theme.getMetadata("baloons", null, "" + 1)));
 		if (images != null) {
 			for (int i = 0; i < editors.length; i++) {
 				if (editors[i] == null) {

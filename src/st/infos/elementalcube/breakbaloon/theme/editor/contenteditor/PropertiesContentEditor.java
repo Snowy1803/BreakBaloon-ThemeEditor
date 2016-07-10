@@ -161,18 +161,18 @@ public class PropertiesContentEditor extends ContentEditor {
 		}
 		
 		public void load(BBTheme theme) {
-			setText(name, theme.getMetadata("name", locale));
-			setText(description, theme.getMetadata("description", locale));
-			setText(version, theme.getMetadata("version", locale));
-			setText(author, theme.getMetadata("author", locale));
+			setText(name, theme.getMetadata("name", locale, ""));
+			setText(description, theme.getMetadata("description", locale, ""));
+			setText(version, theme.getMetadata("version", locale, ""));
+			setText(author, theme.getMetadata("author", locale, ""));
 			if (baloons != null) {
-				setText(baloons, theme.getMetadata("baloons", locale));
+				setText(baloons, theme.getMetadata("baloons", locale, "" + 1));
 			}
 			if (backgroundChooser != null) {
-				backgroundChooser.setBackground(new Color(Integer.parseInt(theme.getMetadata("background", locale))));
+				backgroundChooser.setBackground(new Color(Integer.parseInt(theme.getMetadata("background", locale, "" + 0xFFFFFF))));
 			}
 			if (dbfpg != null) {
-				dbfpg.setSelected(Boolean.parseBoolean(theme.getMetadata("different-baloon-pumped-good", locale)));
+				dbfpg.setSelected(Boolean.parseBoolean(theme.getMetadata("different-baloon-pumped-good", locale, "" + false)));
 				for (Component cmp : editor.getMenuComponents()) {
 					((LeftMenuComponent) cmp).dbfpgPropertyChanged(dbfpg.isSelected());
 				}
