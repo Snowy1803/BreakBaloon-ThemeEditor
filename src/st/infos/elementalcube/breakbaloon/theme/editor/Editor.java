@@ -44,6 +44,7 @@ public class Editor extends JFrame {
 	}
 
 	public Editor(File file) {
+		saveFile = file;
 		try {
 			this.theme = BBTheme.parseTheme(file);
 		} catch (IOException e) {
@@ -99,7 +100,6 @@ public class Editor extends JFrame {
 		saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		exportZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
 		
-		open.setEnabled(false);
 		exportZip.setEnabled(false);
 		
 		newWindow.addActionListener(new ActionListener() {
@@ -170,7 +170,12 @@ public class Editor extends JFrame {
 	// Editor actions
 	
 	public void open() {
-		//TODO
+		JFileChooser chooser = new JFileChooser(saveFile);
+		chooser.setFileFilter(new FileNameExtensionFilter(Lang.getString("filefilter.bbtheme"), "bbtheme"));
+		chooser.showOpenDialog(this);
+		if (chooser.getSelectedFile() != null) {
+			new Editor(chooser.getSelectedFile()).setVisible(true);
+		}
 	}
 	
 	public void save() {
