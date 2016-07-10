@@ -10,9 +10,11 @@ editor.saveUnsavedChanges.title=Sauvegarder
 editor.saveUnsavedChanges.text=Souhaitez-vous sauvegarder vos modifications avant de fermer l'éditeur de thèmes ?
 
 editor.properties=Propriétés
+
 editor.baloon.closed=Ballons
 editor.baloon.opened=Ballons crevés
 editor.baloon.openedGood=Ballons corrects
+
 editor.sound.pump=Son
 editor.sound.wpump=Son (Ballon correct)
 editor.sound.drag=Glissez un son ici pour l'associer au thème
@@ -22,6 +24,10 @@ editor.sound.useDefault=Utiliser le son par défaut
 editor.image.toolbar=Outils de dessin
 editor.image.toolbar.color=Couleur
 editor.image.number=Ballon n°%d
+
+editor.icon.icon=Icône
+editor.icon.wicon=Icône de la fenêtre
+editor.icon.cursor=Curseur
 
 editor.props.name=Nom du thème :
 editor.props.description=Courte description :

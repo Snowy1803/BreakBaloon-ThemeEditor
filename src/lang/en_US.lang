@@ -10,9 +10,11 @@ editor.saveUnsavedChanges.title=Save
 editor.saveUnsavedChanges.text=Do you want to save unsaved changes before close the theme editor?
 
 editor.properties=Properties
+
 editor.baloon.closed=Baloons
 editor.baloon.opened=Popped baloons
 editor.baloon.openedGood=Correct baloons
+
 editor.sound.pump=Sound
 editor.sound.wpump=Sound (Correct baloon)
 editor.sound.drag=Drag a sound here to link it to the theme.
@@ -22,6 +24,10 @@ editor.sound.useDefault=Use default sound
 editor.image.toolbar=Drawing tools
 editor.image.toolbar.color=Color
 editor.image.number=Baloon #%d
+
+editor.icon.icon=Theme icon
+editor.icon.wicon=Window icon
+editor.icon.cursor=Cursor
 
 editor.props.name=Theme name:
 editor.props.description=Small description:
