@@ -16,12 +16,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.TransferHandler;
 
 import org.apache.commons.io.IOUtils;
@@ -71,12 +75,12 @@ public class SoundContentEditor extends ContentEditor implements MouseListener, 
 			g2d.drawString(s3, getWidth() / 2 - s3width / 2, getHeight() / 10 * 8);
 		} else {
 			int toolbarY = getHeight() / 3 * 2;
-			//Play button
+			// Play button
 			g2d.setColor(hoverPlayButton ? Color.LIGHT_GRAY : new Color(160, 160, 160));
-			playButton = new Polygon(new int[]{getWidth() / 2 - 10, getWidth() / 2 - 10, getWidth() / 2 + 10}, 
-					new int[]{toolbarY - 10, toolbarY + 10, toolbarY}, 3);
+			playButton = new Polygon(new int[] { getWidth() / 2 - 10, getWidth() / 2 - 10, getWidth() / 2 + 10 },
+					new int[] { toolbarY - 10, toolbarY + 10, toolbarY }, 3);
 			g2d.fillPolygon(playButton);
-			//Remove button
+			// Remove button
 			g2d.setStroke(new BasicStroke(5));
 			g2d.setColor(hoverRemoveButton ? Color.LIGHT_GRAY : new Color(160, 160, 160));
 			removeButton = new Rectangle(getWidth() - 30, 10, 20, 20);
@@ -164,6 +168,19 @@ public class SoundContentEditor extends ContentEditor implements MouseListener, 
 			}
 		} else if (hoverRemoveButton) {
 			setBytes(null);
+		} else if (hoverPlayButton) {
+			play();
+		}
+	}
+	
+	private synchronized void play() {
+		try {
+			Clip clip = AudioSystem.getClip();
+			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new ByteArrayInputStream(content));
+			clip.open(inputStream);
+			clip.start();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
 	}
 	
