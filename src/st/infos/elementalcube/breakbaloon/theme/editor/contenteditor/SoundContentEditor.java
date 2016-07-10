@@ -26,6 +26,9 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineEvent.Type;
+import javax.sound.sampled.LineListener;
 import javax.swing.TransferHandler;
 
 import org.apache.commons.io.IOUtils;
@@ -36,7 +39,7 @@ public class SoundContentEditor extends ContentEditor implements MouseListener, 
 	private EnumSoundType type;
 	private Rectangle defaultButton, removeButton;
 	private Polygon playButton;
-	private boolean hoverDefaultButton, hoverPlayButton, hoverRemoveButton;
+	private boolean hoverDefaultButton, hoverPlayButton, hoverRemoveButton, isPlaying;
 	
 	public SoundContentEditor(String name, EnumSoundType type) {
 		super(name);
@@ -76,10 +79,14 @@ public class SoundContentEditor extends ContentEditor implements MouseListener, 
 		} else {
 			int toolbarY = getHeight() / 3 * 2;
 			// Play button
-			g2d.setColor(hoverPlayButton ? Color.LIGHT_GRAY : new Color(160, 160, 160));
-			playButton = new Polygon(new int[] { getWidth() / 2 - 10, getWidth() / 2 - 10, getWidth() / 2 + 10 },
-					new int[] { toolbarY - 10, toolbarY + 10, toolbarY }, 3);
-			g2d.fillPolygon(playButton);
+			if (!isPlaying) {
+				g2d.setColor(hoverPlayButton ? Color.LIGHT_GRAY : new Color(160, 160, 160));
+				playButton = new Polygon(new int[] { getWidth() / 2 - 10, getWidth() / 2 - 10, getWidth() / 2 + 10 },
+						new int[] { toolbarY - 10, toolbarY + 10, toolbarY }, 3);
+				g2d.fillPolygon(playButton);
+			} else {
+				playButton = null;
+			}
 			// Remove button
 			g2d.setStroke(new BasicStroke(5));
 			g2d.setColor(hoverRemoveButton ? Color.LIGHT_GRAY : new Color(160, 160, 160));
@@ -168,7 +175,7 @@ public class SoundContentEditor extends ContentEditor implements MouseListener, 
 			}
 		} else if (hoverRemoveButton) {
 			setBytes(null);
-		} else if (hoverPlayButton) {
+		} else if (hoverPlayButton && !isPlaying) {
 			play();
 		}
 	}
@@ -179,6 +186,17 @@ public class SoundContentEditor extends ContentEditor implements MouseListener, 
 			AudioInputStream inputStream = AudioSystem.getAudioInputStream(new ByteArrayInputStream(content));
 			clip.open(inputStream);
 			clip.start();
+			isPlaying = true;
+			repaint();
+			clip.addLineListener(new LineListener() {
+				@Override
+				public void update(LineEvent e) {
+					if (e.getType() == Type.STOP) {
+						isPlaying = false;
+						repaint();
+					}
+				}
+			});
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
