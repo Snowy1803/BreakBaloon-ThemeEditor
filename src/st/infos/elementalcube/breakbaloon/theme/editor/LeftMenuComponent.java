@@ -3,6 +3,8 @@ package st.infos.elementalcube.breakbaloon.theme.editor;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.BaloonImageContentEditor;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.BaloonImageContentEditor.EnumBaloonType;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.ContentEditor;
+import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.IconImageContentEditor;
+import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.IconImageContentEditor.EnumIconType;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.PropertiesContentEditor;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.SoundContentEditor;
 import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.SoundContentEditor.EnumSoundType;
@@ -32,13 +34,16 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 	}
 
 	public static LeftMenuComponent[] getList(Editor editor) {
-		LeftMenuComponent[] list = new LeftMenuComponent[6];
+		LeftMenuComponent[] list = new LeftMenuComponent[9];
 		list[0] = new LeftMenuComponent(editor, new PropertiesContentEditor(editor, "editor.properties"));
-		list[1] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.closed", EnumBaloonType.CLOSED));
-		list[2] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.opened", EnumBaloonType.OPENED));
-		list[3] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.openedGood", EnumBaloonType.OPENED_GOOD));
-		list[4] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.pump", EnumSoundType.PUMP));
-		list[5] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.wpump", EnumSoundType.WPUMP));
+		list[1] = new LeftMenuComponent(editor, new IconImageContentEditor(editor, "editor.icon.icon", EnumIconType.ICON));
+		list[2] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.closed", EnumBaloonType.CLOSED));
+		list[3] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.opened", EnumBaloonType.OPENED));
+		list[4] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.openedGood", EnumBaloonType.OPENED_GOOD));
+		list[5] = new LeftMenuComponent(editor, new IconImageContentEditor(editor, "editor.icon.curor", EnumIconType.CURSOR));
+		list[6] = new LeftMenuComponent(editor, new IconImageContentEditor(editor, "editor.icon.wicon", EnumIconType.WICON));
+		list[7] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.pump", EnumSoundType.PUMP));
+		list[8] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.wpump", EnumSoundType.WPUMP));
 		return list;
 	}
 	
