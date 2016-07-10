@@ -12,6 +12,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
@@ -21,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
-public class DrawEditor extends JPanel implements MouseListener, MouseMotionListener {
+public class DrawEditor extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
 	private static final long serialVersionUID = -5583820906102563391L;
 	private BufferedImage image;
 	private int zoomLevel = 5;
@@ -34,6 +36,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		setDoubleBuffered(false);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addMouseWheelListener(this);
 		image = new BufferedImage(imageDimension.width, imageDimension.height, BufferedImage.TYPE_INT_RGB);
 		this.editor = editor;
 		for (int i = 0; i < image.getWidth(); i++) {
@@ -154,6 +157,14 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	
 	public void setZoomLevel(int zoomLevel) {
 		this.zoomLevel = zoomLevel;
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		if (e.isControlDown()) {
+			zoomLevel -= e.getWheelRotation();
+			repaint();
+		}
 	}
 }
 
