@@ -5,8 +5,11 @@ import st.infos.elementalcube.snowylangapi.LangLoader;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.Locale;
@@ -38,7 +41,7 @@ public class BBTheme {
 	}
 
 	public static BBTheme parseTheme(File file) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		String line;
 		Properties properties = new Properties();
 		while ((line = reader.readLine()) != null) {
@@ -71,7 +74,7 @@ public class BBTheme {
 	 * @throws IOException 
 	 */
 	public void saveToDirectory(File file) throws IOException {
-		PrintWriter pw = new PrintWriter(file);
+		PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
 		for (Object prop : properties.keySet()) {
 			if (!properties.getProperty(prop.toString()).isEmpty()) {
 				pw.println(prop + "=" + properties.getProperty(prop.toString()));
