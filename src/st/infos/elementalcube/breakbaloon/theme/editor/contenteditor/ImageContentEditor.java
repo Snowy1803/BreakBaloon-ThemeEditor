@@ -1,5 +1,7 @@
 package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
+import st.infos.elementalcube.breakbaloon.theme.editor.drawing.DrawEditor;
+
 public abstract class ImageContentEditor extends ContentEditor {
 	private static final long serialVersionUID = 1827994183055703933L;
 

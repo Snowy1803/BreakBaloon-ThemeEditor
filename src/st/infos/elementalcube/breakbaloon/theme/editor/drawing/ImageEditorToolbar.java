@@ -1,5 +1,6 @@
-package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
+package st.infos.elementalcube.breakbaloon.theme.editor.drawing;
 
+import st.infos.elementalcube.breakbaloon.theme.editor.contenteditor.ImageContentEditor;
 import st.infos.elementalcube.snowylangapi.Lang;
 
 import java.awt.Color;

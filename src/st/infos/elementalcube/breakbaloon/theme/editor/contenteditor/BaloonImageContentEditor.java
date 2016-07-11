@@ -2,6 +2,8 @@ package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
 import st.infos.elementalcube.breakbaloon.theme.editor.BBTheme;
 import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
+import st.infos.elementalcube.breakbaloon.theme.editor.drawing.DrawEditor;
+import st.infos.elementalcube.breakbaloon.theme.editor.drawing.ImageEditorToolbar;
 import st.infos.elementalcube.snowylangapi.Lang;
 
 import java.awt.BorderLayout;
