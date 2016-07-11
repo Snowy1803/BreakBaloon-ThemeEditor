@@ -100,6 +100,14 @@ public class Editor extends JFrame {
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 		saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		exportZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+
+		file.setMnemonic('F');
+		newWindow.setMnemonic('N');
+		open.setMnemonic('O');
+		save.setMnemonic('S');
+		saveAs.setMnemonic('A');
+		exportZip.setMnemonic('E');
+		addIngame.setMnemonic('I');
 		
 		newWindow.addActionListener(new ActionListener() {
 			@Override
