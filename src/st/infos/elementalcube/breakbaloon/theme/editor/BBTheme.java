@@ -1,5 +1,6 @@
 package st.infos.elementalcube.breakbaloon.theme.editor;
 
+import st.infos.elementalcube.snowylangapi.Lang;
 import st.infos.elementalcube.snowylangapi.LangLoader;
 
 import java.awt.image.BufferedImage;
@@ -13,6 +14,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
@@ -76,8 +79,10 @@ public class BBTheme {
 	 * 
 	 * @param file the BBTHEME emplacement
 	 * @throws IOException
+	 * @return warning list
 	 */
-	public void saveToDirectory(File file) throws IOException {
+	public List<String> saveToDirectory(File file) throws IOException {
+		List<String> warning = new ArrayList<>();
 		file.createNewFile();
 		PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
 		for (Object prop : properties.keySet()) {
@@ -100,13 +105,19 @@ public class BBTheme {
 		ImageIO.write(wicon, "png", new File(file.getParentFile(), "wicon.png"));
 		if (pump != null) {
 			Files.write(new File(file.getParentFile(), "pump.wav").toPath(), pump);
+		} else {
+			warning.add(Lang.getString("save.warning.missing", "pump.wav"));
 		}
 		if (wpump != null) {
 			Files.write(new File(file.getParentFile(), "wpump.wav").toPath(), wpump);
+		} else {
+			warning.add(Lang.getString("save.warning.missing", "wpump.wav"));
 		}
+		return warning;
 	}
 	
-	public void saveToZip(File zip) throws IOException {
+	public List<String> saveToZip(File zip) throws IOException {
+		List<String> warning = new ArrayList<>();
 		String id = zip.getName().substring(0, zip.getName().length() - 4);
 		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zip));
 		//BBTHEME
@@ -123,32 +134,37 @@ public class BBTheme {
 		byte[] bbtdata = sb.toString().getBytes();
 		zos.write(bbtdata, 0, bbtdata.length);
 		zos.closeEntry();
-		//OPENED
+		//FILES
 		int baloons = Integer.parseInt(getMetadata("baloons", null, "" + closed.length));
 		for (int i = 0; i < baloons; i++) {
-			addToZip(zos, id + "/closed" + i + ".png", closed[i]);
-			addToZip(zos, id + "/opened" + i + ".png", opened[i]);
+			addToZip(zos, id + "/closed" + i + ".png", closed[i], warning);
+			addToZip(zos, id + "/opened" + i + ".png", opened[i], warning);
 			if (Boolean.parseBoolean(getMetadata("different-baloon-pumped-good", null, "" + false))) {
-				addToZip(zos, id + "/opened" + i + "-good.png", openedGood[i]);
+				addToZip(zos, id + "/opened" + i + "-good.png", openedGood[i], warning);
 			}
 		}
-		addToZip(zos, id + "/" + id + ".png", icon);
-		addToZip(zos, id + "/cursor.gif", cursor, "gif");
-		addToZip(zos, id + "/wicon.png", wicon);
-		addToZip(zos, id + "/pump.wav", pump);
-		addToZip(zos, id + "/wpump.wav", wpump);
+		addToZip(zos, id + "/" + id + ".png", icon, warning);
+		addToZip(zos, id + "/cursor.gif", cursor, "gif", warning);
+		addToZip(zos, id + "/wicon.png", wicon, warning);
+		addToZip(zos, id + "/pump.wav", pump, warning);
+		addToZip(zos, id + "/wpump.wav", wpump, warning);
 		zos.close();
+		return warning;
 	}
 	
-	private void addToZip(ZipOutputStream zos, String file, BufferedImage value) throws IOException {
-		addToZip(zos, file, value, "png");
+	private void addToZip(ZipOutputStream zos, String file, BufferedImage value, List<String> warning) throws IOException {
+		addToZip(zos, file, value, "png", warning);
 	}
 	
-	private void addToZip(ZipOutputStream zos, String file, BufferedImage value, String method) throws IOException {
-		addToZip(zos, file, imageToByteArray(value, method));
+	private void addToZip(ZipOutputStream zos, String file, BufferedImage value, String method, List<String> warning) throws IOException {
+		addToZip(zos, file, imageToByteArray(value, method), warning);
 	}
 	
-	private void addToZip(ZipOutputStream zos, String file, byte[] data) throws IOException {
+	private void addToZip(ZipOutputStream zos, String file, byte[] data, List<String> warning) throws IOException {
+		if (data == null) {
+			warning.add(Lang.getString("save.warning.missing", file.split("/")[1]));
+			return;
+		}
 		ZipEntry entry = new ZipEntry(file);
 		zos.putNextEntry(entry);
 		

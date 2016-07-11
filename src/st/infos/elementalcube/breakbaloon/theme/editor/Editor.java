@@ -13,10 +13,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -196,7 +198,7 @@ public class Editor extends JFrame {
 		}
 		reload();
 		try {
-			theme.saveToDirectory(saveFile);
+			showWarningList(theme.saveToDirectory(saveFile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -219,7 +221,7 @@ public class Editor extends JFrame {
 		if (chooser.getSelectedFile() != null) {
 			reload();
 			try {
-				theme.saveToZip(chooser.getSelectedFile());
+				showWarningList(theme.saveToZip(chooser.getSelectedFile()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -234,13 +236,19 @@ public class Editor extends JFrame {
 			try {
 				File file = new File(System.getenv("APPDATA") + "/BreakBaloon/resources/" + id + "/" + id + ".bbtheme");
 				file.getParentFile().mkdirs();
-				theme.saveToDirectory(file);
+				showWarningList(theme.saveToDirectory(file));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
+	private void showWarningList(List<String> warning) {
+		if(!warning.isEmpty()) {
+			JOptionPane.showMessageDialog(this, new JList<>(warning.toArray()), Lang.getString("save.warning.title"), JOptionPane.PLAIN_MESSAGE);
+		}
+	}
+
 	public void quit() {
 		if (!saved) {
 			int input = JOptionPane.showConfirmDialog(Editor.this, Lang.getString("editor.saveUnsavedChanges.text"),

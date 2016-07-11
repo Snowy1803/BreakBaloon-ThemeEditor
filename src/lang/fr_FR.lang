@@ -60,5 +60,8 @@ menu.file.ingame=Utiliser en jeu
 filefilter.bbtheme=Fichier de configuration de thème (.bbtheme)
 filefilter.zip=Dossiers compressés (.zip)
 
+save.warning.title=Enregistré avec des erreurs
+save.warning.missing=Le fichier "%s" n'a pas pu être enregistré
+
 transfer.ingame.title=Utiliser en jeu
 transfer.ingame.text=Choisissez l'ID du thème. Il doit être en minuscule et sans espaces, ni slash. Ce sera le nom du fichier de thème.

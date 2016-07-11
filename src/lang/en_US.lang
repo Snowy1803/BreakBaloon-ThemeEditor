@@ -60,5 +60,8 @@ menu.file.ingame=Add theme in game
 filefilter.bbtheme=Theme configuration file (.bbtheme)
 filefilter.zip=Compressed folders (.zip)
 
+save.warning.title=Saved with warnings
+save.warning.missing=The file "%s" couldn't be saved.
+
 transfer.ingame.title=Add theme in game
 transfer.ingame.text=Choose the theme ID. It must be in lower case and without spaces or slash. It will be the theme file name.
