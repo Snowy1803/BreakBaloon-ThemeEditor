@@ -20,13 +20,18 @@ import javax.swing.JToolBar;
 
 public class ImageEditorToolbar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 2792625817326549362L;
-	private static final String BUTTON_COLOR = "color";
-	private JButton color;
-	public Color currentColor = Color.BLACK;
+	private static final String BUTTON_COLOR = "color",
+								BUTTON_CLEAR = "clear";
+	private JButton color, clear;
 	
-	public ImageEditorToolbar() {
+	public Color currentColor = Color.BLACK;
+	public ImageContentEditor editor;
+	
+	public ImageEditorToolbar(ImageContentEditor editor) {
 		super(Lang.getString("editor.image.toolbar"));
+		this.editor = editor;
 		this.color = addButton(BUTTON_COLOR);
+		this.clear = addButton(BUTTON_CLEAR);
 		adaptColorButton();
 	}
 	
@@ -54,6 +59,8 @@ public class ImageEditorToolbar extends JToolBar implements ActionListener {
 		if (BUTTON_COLOR.equals(e.getActionCommand())) {
 			currentColor = JColorChooser.showDialog(null, Lang.getString("editor.image.toolbar." + BUTTON_COLOR), currentColor);
 			adaptColorButton();
+		} else if (BUTTON_CLEAR.equals(e.getActionCommand())) {
+			editor.currentDrawEditor().clear();
 		}
 	}
 	

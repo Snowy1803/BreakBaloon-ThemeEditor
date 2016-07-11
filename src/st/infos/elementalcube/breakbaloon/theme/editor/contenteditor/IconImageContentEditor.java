@@ -7,7 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 
-public class IconImageContentEditor extends ContentEditor {
+public class IconImageContentEditor extends ImageContentEditor {
 	private static final long serialVersionUID = 6556988077515024109L;
 	private EnumIconType type;
 	private DrawEditor drawing;
@@ -17,7 +17,7 @@ public class IconImageContentEditor extends ContentEditor {
 		super(name);
 		setLayout(new BorderLayout());
 		this.type = type;
-		this.toolbar = new ImageEditorToolbar();
+		this.toolbar = new ImageEditorToolbar(this);
 		drawing = new DrawEditor(frame, new Dimension(16, 16));
 		drawing.setToolbar(toolbar);
 		add(drawing, BorderLayout.CENTER);
@@ -63,6 +63,11 @@ public class IconImageContentEditor extends ContentEditor {
 	
 	public EnumIconType getBaloonType() {
 		return type;
+	}
+
+	@Override
+	public DrawEditor currentDrawEditor() {
+		return drawing;
 	}
 	
 	public static enum EnumIconType {

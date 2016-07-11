@@ -23,6 +23,7 @@ editor.sound.useDefault=Use default sound
 
 editor.image.toolbar=Drawing tools
 editor.image.toolbar.color=Color
+editor.image.toolbar.clear=Clear image
 editor.image.number=Baloon #%d
 
 editor.icon.icon=Theme icon

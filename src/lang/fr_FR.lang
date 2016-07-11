@@ -23,6 +23,7 @@ editor.sound.useDefault=Utiliser le son par défaut
 
 editor.image.toolbar=Outils de dessin
 editor.image.toolbar.color=Couleur
+editor.image.toolbar.clear=Nettoyer l'image
 editor.image.number=Ballon n°%d
 
 editor.icon.icon=Icône

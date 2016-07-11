@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
-public class BaloonImageContentEditor extends ContentEditor {
+public class BaloonImageContentEditor extends ImageContentEditor {
 	private static final long serialVersionUID = 6556988077515024109L;
 	private EnumBaloonType type;
 	private DrawEditor[] editors;
@@ -36,7 +36,7 @@ public class BaloonImageContentEditor extends ContentEditor {
 		super(name);
 		setLayout(new BorderLayout());
 		this.type = type;
-		this.toolbar = new ImageEditorToolbar();
+		this.toolbar = new ImageEditorToolbar(this);
 		this.frame = editor;
 		editors = new DrawEditor[Integer.parseInt(editor.theme.getMetadata("baloons", null, "" + 1))];
 		constructEditors();
@@ -118,6 +118,11 @@ public class BaloonImageContentEditor extends ContentEditor {
 	
 	public EnumBaloonType getBaloonType() {
 		return type;
+	}
+
+	@Override
+	public DrawEditor currentDrawEditor() {
+		return (DrawEditor) pane.getBottomComponent();
 	}
 	
 	public static enum EnumBaloonType {
