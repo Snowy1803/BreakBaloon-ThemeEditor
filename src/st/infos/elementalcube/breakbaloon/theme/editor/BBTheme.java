@@ -78,6 +78,7 @@ public class BBTheme {
 	 * @throws IOException
 	 */
 	public void saveToDirectory(File file) throws IOException {
+		file.createNewFile();
 		PrintWriter pw = new PrintWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
 		for (Object prop : properties.keySet()) {
 			if (!properties.getProperty(prop.toString()).isEmpty()) {
@@ -97,8 +98,12 @@ public class BBTheme {
 		ImageIO.write(cursor, "gif", new File(file.getParentFile(), "cursor.gif"));
 		ImageIO.write(icon, "png", new File(file.getParentFile(), file.getName().substring(0, file.getName().length() - 8) + ".png"));
 		ImageIO.write(wicon, "png", new File(file.getParentFile(), "wicon.png"));
-		Files.write(new File(file.getParentFile(), "pump.wav").toPath(), pump);
-		Files.write(new File(file.getParentFile(), "wpump.wav").toPath(), wpump);
+		if (pump != null) {
+			Files.write(new File(file.getParentFile(), "pump.wav").toPath(), pump);
+		}
+		if (wpump != null) {
+			Files.write(new File(file.getParentFile(), "wpump.wav").toPath(), wpump);
+		}
 	}
 	
 	public void saveToZip(File zip) throws IOException {

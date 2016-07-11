@@ -55,6 +55,10 @@ menu.file.open=Open
 menu.file.save=Save
 menu.file.saveAs=Save as...
 menu.file.export.zip=Export as .zip
+menu.file.ingame=Add theme in game
 
 filefilter.bbtheme=Theme configuration file (.bbtheme)
 filefilter.zip=Compressed folders (.zip)
+
+transfer.ingame.title=Add theme in game
+transfer.ingame.text=Choose the theme ID. It must be in lower case and without spaces or slash. It will be the theme file name.

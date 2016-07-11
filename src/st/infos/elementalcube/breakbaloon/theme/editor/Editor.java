@@ -37,12 +37,12 @@ public class Editor extends JFrame {
 	public Editor(String file) {
 		this(new File(file));
 	}
-
+	
 	public Editor() {
 		this.theme = new BBTheme();
 		construct();
 	}
-
+	
 	public Editor(File file) {
 		saveFile = file;
 		try {
@@ -82,25 +82,22 @@ public class Editor extends JFrame {
 		addWindowListener(new WindowCloseListener());
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
-
+	
 	private JMenuBar constructJMenuBar() {
 		JMenuBar bar = new JMenuBar();
 		
 		JMenu file = new JMenu(Lang.getString("menu.file"));
 		
-		JMenuItem newWindow = new JMenuItem(Lang.getString("menu.file.new.window")),
-				open = new JMenuItem(Lang.getString("menu.file.open")),
-				save = new JMenuItem(Lang.getString("menu.file.save")),
-				saveAs = new JMenuItem(Lang.getString("menu.file.saveAs")),
-				exportZip = new JMenuItem(Lang.getString("menu.file.export.zip")),
-				addIngame = new JMenuItem(Lang.getString("menu.file.ingame"));
-		
+		JMenuItem newWindow = new JMenuItem(Lang.getString("menu.file.new.window")), open = new JMenuItem(Lang.getString("menu.file.open")),
+				save = new JMenuItem(Lang.getString("menu.file.save")), saveAs = new JMenuItem(Lang.getString("menu.file.saveAs")),
+				exportZip = new JMenuItem(Lang.getString("menu.file.export.zip")), addIngame = new JMenuItem(Lang.getString("menu.file.ingame"));
+				
 		newWindow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 		saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		exportZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
-
+		
 		file.setMnemonic('F');
 		newWindow.setMnemonic('N');
 		open.setMnemonic('O');
@@ -139,6 +136,12 @@ public class Editor extends JFrame {
 				exportZip();
 			}
 		});
+		addIngame.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addIngame();
+			}
+		});
 		
 		file.add(newWindow);
 		file.add(open);
@@ -146,12 +149,13 @@ public class Editor extends JFrame {
 		file.add(save);
 		file.add(saveAs);
 		file.add(exportZip);
+		file.add(addIngame);
 		
 		bar.add(file);
 		
 		return bar;
 	}
-
+	
 	public void setContentEditor(ContentEditor content) {
 		container.removeAll();
 		if (content != null) {
@@ -159,7 +163,7 @@ public class Editor extends JFrame {
 		}
 		revalidate();
 	}
-
+	
 	public ContentEditor getContentEditor() {
 		return container.getComponentCount() == 1 ? (ContentEditor) container.getComponent(0) : null;
 	}
@@ -222,9 +226,24 @@ public class Editor extends JFrame {
 		}
 	}
 	
+	public void addIngame() {
+		reload();
+		String id = JOptionPane.showInputDialog(this, Lang.getString("transfer.ingame.text"), Lang.getString("transfer.ingame.title"), 
+				JOptionPane.PLAIN_MESSAGE);
+		if (id != null) {
+			try {
+				File file = new File(System.getenv("APPDATA") + "/BreakBaloon/resources/" + id + "/" + id + ".bbtheme");
+				file.getParentFile().mkdirs();
+				theme.saveToDirectory(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void quit() {
 		if (!saved) {
-			int input = JOptionPane.showConfirmDialog(Editor.this, Lang.getString("editor.saveUnsavedChanges.text"), 
+			int input = JOptionPane.showConfirmDialog(Editor.this, Lang.getString("editor.saveUnsavedChanges.text"),
 					Lang.getString("editor.saveUnsavedChanges.title"), JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (input == JOptionPane.YES_OPTION) {
 				save();
@@ -243,7 +262,7 @@ public class Editor extends JFrame {
 			quit();
 		}
 	}
-
+	
 	public void reload() {
 		for (Component leftPane : menu.getComponents()) {
 			((LeftMenuComponent) leftPane).getContentEditor().saveToBBTheme(theme);
@@ -252,7 +271,7 @@ public class Editor extends JFrame {
 			((LeftMenuComponent) leftPane).getContentEditor().loadFromBBTheme(theme);
 		}
 	}
-
+	
 	public Component[] getMenuComponents() {
 		return menu.getComponents();
 	}
