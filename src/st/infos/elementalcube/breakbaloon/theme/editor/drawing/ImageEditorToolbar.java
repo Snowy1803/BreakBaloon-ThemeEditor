@@ -22,25 +22,36 @@ import javax.swing.JToolBar;
 public class ImageEditorToolbar extends JToolBar implements ActionListener {
 	private static final long serialVersionUID = 2792625817326549362L;
 	private static final String BUTTON_COLOR = "color",
-								BUTTON_CLEAR = "clear";
-	private JButton color, clear;
+								BUTTON_CLEAR = "clear",
+								BUTTON_PENCIL = "pencil",
+								BUTTON_FILL = "fill";
+	private JButton color, pencil, fill;
 	
 	public Color currentColor = Color.BLACK;
+	public DrawingTool currentTool = new DrawingToolPencil();
+	
 	public ImageContentEditor editor;
 	
 	public ImageEditorToolbar(ImageContentEditor editor) {
 		super(Lang.getString("editor.image.toolbar"));
 		this.editor = editor;
 		this.color = addButton(BUTTON_COLOR);
-		this.clear = addButton(BUTTON_CLEAR);
+		addButton(BUTTON_CLEAR);
+		addSeparator();
+		pencil = addButton(BUTTON_PENCIL);
+		fill = addButton(BUTTON_FILL);
 		adaptColorButton();
 	}
 	
 	private void adaptColorButton() {
 		try {
 			BufferedImageOp lookup = new LookupOp(new ColorMapper(Color.WHITE, currentColor), null);
-			BufferedImage convertedImage = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_COLOR + ".png")), null);
-			color.setIcon(new ImageIcon(convertedImage.getScaledInstance(32, 32, BufferedImage.SCALE_SMOOTH)));
+			BufferedImage convertedColor = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_COLOR + ".png")), null);
+			BufferedImage convertedPencil = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_PENCIL + ".png")), null);
+			BufferedImage convertedFill = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_FILL + ".png")), null);
+			color.setIcon(new ImageIcon(convertedColor.getScaledInstance(32, 32, BufferedImage.SCALE_SMOOTH)));
+			pencil.setIcon(new ImageIcon(convertedPencil));
+			fill.setIcon(new ImageIcon(convertedFill));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,6 +73,10 @@ public class ImageEditorToolbar extends JToolBar implements ActionListener {
 			adaptColorButton();
 		} else if (BUTTON_CLEAR.equals(e.getActionCommand())) {
 			editor.currentDrawEditor().clear();
+		} else if (BUTTON_PENCIL.equals(e.getActionCommand())) {
+			currentTool = new DrawingToolPencil();
+		} else if (BUTTON_FILL.equals(e.getActionCommand())) {
+			currentTool = new DrawingToolFill();
 		}
 	}
 	

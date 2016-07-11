@@ -42,7 +42,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		this.editor = editor;
 		for (int i = 0; i < image.getWidth(); i++) {
 	        for (int j = 0; j < image.getHeight(); j++) {
-	            image.setRGB(i, j, getBackgroundColor());
+	            image.setRGB(i, j, getBackgroundColor().getRGB());
 	        }
 	    }
 	}
@@ -110,49 +110,14 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		Point scaled = new Point(point.x / zoomLevel, point.y / zoomLevel);
 		if (last == null) last = scaled;
 		try {
-			drawLineImpl(new Point(scaled), leftClick ? toolbar.currentColor.getRGB() : getBackgroundColor());
+			toolbar.currentTool.draw(this, last, new Point(scaled), leftClick ? toolbar.currentColor : getBackgroundColor());
 		} catch (ArrayIndexOutOfBoundsException ex) {}
 		repaint();
 		last = scaled;
 	}
 	
-	private int getBackgroundColor() {
-		return new Color(0, 0, 0, 0).getRGB();
-	}
-
-	private void drawLineImpl(Point point, int color) {
-		int x = last.x, x2 = point.x, y = last.y, y2 = point.y;
-		int w = x2 - x;
-		int h = y2 - y;
-		int dx1 = 0, dy1 = 0, dx2 = 0, dy2 = 0;
-		if (w < 0) dx1 = -1;
-		else if (w > 0) dx1 = 1;
-		if (h < 0) dy1 = -1;
-		else if (h > 0) dy1 = 1;
-		if (w < 0) dx2 = -1;
-		else if (w > 0) dx2 = 1;
-		int longest = Math.abs(w);
-		int shortest = Math.abs(h);
-		if (!(longest > shortest)) {
-			longest = Math.abs(h);
-			shortest = Math.abs(w);
-			if (h < 0) dy2 = -1;
-			else if (h > 0) dy2 = 1;
-			dx2 = 0;
-		}
-		int numerator = longest >> 1;
-		for (int i = 0; i <= longest; i++) {
-			image.setRGB(x, y, color);
-			numerator += shortest;
-			if (!(numerator < longest)) {
-				numerator -= longest;
-				x += dx1;
-				y += dy1;
-			} else {
-				x += dx2;
-				y += dy2;
-			}
-		}
+	private Color getBackgroundColor() {
+		return new Color(0, 0, 0, 0);
 	}
 	
 	public int getZoomLevel() {
