@@ -92,15 +92,14 @@ public class Editor extends JFrame {
 				open = new JMenuItem(Lang.getString("menu.file.open")),
 				save = new JMenuItem(Lang.getString("menu.file.save")),
 				saveAs = new JMenuItem(Lang.getString("menu.file.saveAs")),
-				exportZip = new JMenuItem(Lang.getString("menu.file.export.zip"));
+				exportZip = new JMenuItem(Lang.getString("menu.file.export.zip")),
+				addIngame = new JMenuItem(Lang.getString("menu.file.ingame"));
 		
 		newWindow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 		saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		exportZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
-		
-		exportZip.setEnabled(false);
 		
 		newWindow.addActionListener(new ActionListener() {
 			@Override
@@ -202,7 +201,17 @@ public class Editor extends JFrame {
 	}
 	
 	public void exportZip() {
-		//TODO
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileFilter(new FileNameExtensionFilter(Lang.getString("filefilter.zip"), "zip"));
+		chooser.showSaveDialog(this);
+		if (chooser.getSelectedFile() != null) {
+			reload();
+			try {
+				theme.saveToZip(chooser.getSelectedFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void quit() {

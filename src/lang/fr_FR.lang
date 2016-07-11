@@ -57,3 +57,4 @@ menu.file.saveAs=Sauvegarder sous...
 menu.file.export.zip=Exporter sous .zip
 
 filefilter.bbtheme=Fichier de configuration de thème (.bbtheme)
+filefilter.zip=Dossiers compressés (.zip)
