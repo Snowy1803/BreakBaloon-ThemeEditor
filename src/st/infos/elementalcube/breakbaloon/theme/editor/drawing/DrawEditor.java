@@ -1,6 +1,7 @@
 package st.infos.elementalcube.breakbaloon.theme.editor.drawing;
 
 import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
+import st.infos.elementalcube.breakbaloon.theme.editor.drawing.DrawingTool.EnumUseType;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -41,16 +42,16 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		image = new BufferedImage(imageDimension.width, imageDimension.height, BufferedImage.TYPE_INT_ARGB);
 		this.editor = editor;
 		for (int i = 0; i < image.getWidth(); i++) {
-	        for (int j = 0; j < image.getHeight(); j++) {
-	            image.setRGB(i, j, getBackgroundColor().getRGB());
-	        }
-	    }
+			for (int j = 0; j < image.getHeight(); j++) {
+				image.setRGB(i, j, getBackgroundColor().getRGB());
+			}
+		}
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		((Graphics2D) g).setStroke(new BasicStroke(2)); 
+		((Graphics2D) g).setStroke(new BasicStroke(2));
 		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, image.getWidth() * zoomLevel, image.getHeight() * zoomLevel);
 		g.drawImage(image, 0, 0, image.getWidth() * zoomLevel, image.getHeight() * zoomLevel, null);
@@ -63,10 +64,10 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	public void clear() {
 		int rgb = Integer.parseInt(editor.theme.getMetadata("background", null, "" + 0xFFFFFF));
 		for (int i = 0; i < image.getWidth(); i++) {
-	        for (int j = 0; j < image.getHeight(); j++) {
-	            image.setRGB(i, j, rgb);
-	        }
-	    }
+			for (int j = 0; j < image.getHeight(); j++) {
+				image.setRGB(i, j, rgb);
+			}
+		}
 		repaint();
 	}
 	
@@ -83,11 +84,16 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		draw(e.getPoint(), SwingUtilities.isLeftMouseButton(e));
+		if (toolbar.currentTool.canBeUsed(EnumUseType.PRESSED)) {
+			draw(e.getPoint(), SwingUtilities.isLeftMouseButton(e));
+		}
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (toolbar.currentTool.canBeUsed(EnumUseType.RELEASED)) {
+			draw(e.getPoint(), SwingUtilities.isLeftMouseButton(e));
+		}
 		last = null;
 		editor.repaint();
 	}
@@ -100,7 +106,9 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		draw(e.getPoint(), SwingUtilities.isLeftMouseButton(e));
+		if (toolbar.currentTool.canBeUsed(EnumUseType.DRAGGED)) {
+			draw(e.getPoint(), SwingUtilities.isLeftMouseButton(e));
+		}
 	}
 	
 	@Override
@@ -127,7 +135,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	public void setZoomLevel(int zoomLevel) {
 		this.zoomLevel = zoomLevel;
 	}
-
+	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (e.isControlDown()) {

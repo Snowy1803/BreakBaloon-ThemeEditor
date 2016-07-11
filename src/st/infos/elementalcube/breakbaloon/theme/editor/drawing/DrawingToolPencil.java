@@ -5,6 +5,11 @@ import java.awt.Point;
 
 public class DrawingToolPencil extends DrawingTool {
 	@Override
+	public boolean canBeUsed(EnumUseType useType) {
+		return useType != EnumUseType.RELEASED;
+	}
+	
+	@Override
 	public void draw(DrawEditor editor, Point from, Point to, Color color) {
 		int x = from.x, x2 = to.x, y = from.y, y2 = to.y;
 		int w = x2 - x;
