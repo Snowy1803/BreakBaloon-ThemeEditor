@@ -20,7 +20,6 @@ public class DrawingToolFill extends DrawingTool {
 		if (seekingColor == color) {
 			return;
 		}
-		System.out.println(seekingColor);
 		image.setRGB(point.x, point.y, color.getRGB());
 		if (point.x + 1 < image.getHeight() && image.getRGB(point.x + 1, point.y) == seekingColor.getRGB()) {
 			propagate(image, new Point(point.x + 1, point.y), seekingColor, color);
