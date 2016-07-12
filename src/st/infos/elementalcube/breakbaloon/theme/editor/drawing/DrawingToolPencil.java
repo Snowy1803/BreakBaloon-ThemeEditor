@@ -10,7 +10,7 @@ public class DrawingToolPencil extends DrawingTool {
 	}
 	
 	@Override
-	public void draw(DrawEditor editor, Point from, Point to, Color color) {
+	public boolean draw(DrawEditor editor, Point from, Point to, Color color) {
 		int x = from.x, x2 = to.x, y = from.y, y2 = to.y;
 		int w = x2 - x;
 		int h = y2 - y;
@@ -43,5 +43,6 @@ public class DrawingToolPencil extends DrawingTool {
 				y += dy2;
 			}
 		}
+		return true;
 	}
 }

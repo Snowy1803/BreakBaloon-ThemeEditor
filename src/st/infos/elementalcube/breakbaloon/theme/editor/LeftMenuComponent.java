@@ -42,8 +42,8 @@ public class LeftMenuComponent extends JPanel implements MouseListener {
 		list[4] = new LeftMenuComponent(editor, new BaloonImageContentEditor(editor, "editor.baloon.openedGood", EnumBaloonType.OPENED_GOOD));
 		list[5] = new LeftMenuComponent(editor, new IconImageContentEditor(editor, "editor.icon.cursor", EnumIconType.CURSOR));
 		list[6] = new LeftMenuComponent(editor, new IconImageContentEditor(editor, "editor.icon.wicon", EnumIconType.WICON));
-		list[7] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.pump", EnumSoundType.PUMP));
-		list[8] = new LeftMenuComponent(editor, new SoundContentEditor("editor.sound.wpump", EnumSoundType.WPUMP));
+		list[7] = new LeftMenuComponent(editor, new SoundContentEditor(editor, "editor.sound.pump", EnumSoundType.PUMP));
+		list[8] = new LeftMenuComponent(editor, new SoundContentEditor(editor, "editor.sound.wpump", EnumSoundType.WPUMP));
 		return list;
 	}
 	

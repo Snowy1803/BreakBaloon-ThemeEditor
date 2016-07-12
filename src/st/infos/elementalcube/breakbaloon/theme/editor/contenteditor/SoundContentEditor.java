@@ -1,6 +1,7 @@
 package st.infos.elementalcube.breakbaloon.theme.editor.contenteditor;
 
 import st.infos.elementalcube.breakbaloon.theme.editor.BBTheme;
+import st.infos.elementalcube.breakbaloon.theme.editor.Editor;
 import st.infos.elementalcube.snowylangapi.Lang;
 
 import java.awt.BasicStroke;
@@ -40,10 +41,12 @@ public class SoundContentEditor extends ContentEditor implements MouseListener, 
 	private Rectangle defaultButton, removeButton;
 	private Polygon playButton;
 	private boolean hoverDefaultButton, hoverPlayButton, hoverRemoveButton, isPlaying;
+	private Editor editor;
 	
-	public SoundContentEditor(String name, EnumSoundType type) {
+	public SoundContentEditor(Editor editor, String name, EnumSoundType type) {
 		super(name);
 		this.type = type;
+		this.editor = editor;
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		setTransferHandler(new SoundEditorTransferHandler(this));
@@ -150,6 +153,7 @@ public class SoundContentEditor extends ContentEditor implements MouseListener, 
 	
 	public void setBytes(byte[] bytes) {
 		content = bytes;
+		editor.makeDirty();
 		repaint();
 	}
 	

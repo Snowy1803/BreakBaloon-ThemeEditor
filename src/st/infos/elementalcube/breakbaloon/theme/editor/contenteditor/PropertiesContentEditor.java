@@ -29,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class PropertiesContentEditor extends ContentEditor {
 	private static final long serialVersionUID = 5506200457569487080L;
@@ -116,6 +118,23 @@ public class PropertiesContentEditor extends ContentEditor {
 			description.setPreferredSize(new Dimension(name.getWidth(), 23));
 			version.setPreferredSize(new Dimension(name.getWidth(), 23));
 			author.setPreferredSize(new Dimension(name.getWidth(), 23));
+			
+			name.getDocument().addDocumentListener(new DocumentListener() {
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+					editor.makeDirty();
+				}
+				
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+					editor.makeDirty();
+				}
+				
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					editor.makeDirty();
+				}
+			});
 			
 			contentPane.add(createLabel("editor.props.name"));
 			contentPane.add(name);
@@ -250,6 +269,7 @@ public class PropertiesContentEditor extends ContentEditor {
 			}
 			propertyChange();
 			editor.reload();
+			editor.makeDirty();
 		}
 		
 		private void updateFields() {

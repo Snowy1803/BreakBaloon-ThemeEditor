@@ -143,7 +143,9 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		Point scaled = new Point(point.x / zoomLevel, point.y / zoomLevel);
 		if (last == null) last = scaled;
 		try {
-			toolbar.currentTool.draw(this, last, new Point(scaled), leftClick ? toolbar.currentColor : getBackgroundColor());
+			if (toolbar.currentTool.draw(this, last, new Point(scaled), leftClick ? toolbar.currentColor : getBackgroundColor())) {
+				editor.makeDirty();
+			}
 		} catch (ArrayIndexOutOfBoundsException ex) {}
 		repaint();
 		last = scaled;

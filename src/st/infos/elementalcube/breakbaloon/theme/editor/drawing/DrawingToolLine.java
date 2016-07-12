@@ -14,13 +14,15 @@ public class DrawingToolLine extends DrawingTool {
 	}
 
 	@Override
-	public void draw(DrawEditor editor, Point from, Point to, Color color) {
+	public boolean draw(DrawEditor editor, Point from, Point to, Color color) {
 		if (firstPoint == null) {
 			firstPoint = to;
 		} else {
 			new DrawingToolPencil().draw(editor, firstPoint, to, color);
 			firstPoint = null;
+			return true;
 		}
+		return false;
 	}
 	
 	@Override

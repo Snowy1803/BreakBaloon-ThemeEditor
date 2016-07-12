@@ -31,6 +31,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Editor extends JFrame {
 	private static final long serialVersionUID = -247298518651532746L;
+	public static final String VERSION = "1.1-alpha";
 	public BBTheme theme;
 	private boolean saved = true;
 	private File saveFile;
@@ -59,7 +60,7 @@ public class Editor extends JFrame {
 	}
 	
 	private void construct() {
-		setTitle(Lang.getString("editor.name", "1.1-alpha"));
+		setTitle(Lang.getString("editor.name", VERSION));
 		
 		menu = new JPanel();
 		menu.setLayout(new BoxLayout(menu, BoxLayout.PAGE_AXIS));
@@ -172,12 +173,12 @@ public class Editor extends JFrame {
 	
 	public void makeDirty() {
 		saved = false;
-		setTitle(Lang.getString("editor.name.unsaved"));
+		setTitle(Lang.getString("editor.name.unsaved", VERSION));
 	}
 	
 	public void saved() {
 		saved = true;
-		setTitle(Lang.getString("editor.name"));
+		setTitle(Lang.getString("editor.name", VERSION));
 	}
 	
 	// Editor actions
@@ -199,6 +200,7 @@ public class Editor extends JFrame {
 		reload();
 		try {
 			showWarningList(theme.saveToDirectory(saveFile));
+			saved();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

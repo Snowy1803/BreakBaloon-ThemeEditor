@@ -7,7 +7,7 @@ import java.awt.Point;
 public abstract class DrawingTool {
 	public abstract boolean canBeUsed(EnumUseType useType);
 	
-	public abstract void draw(DrawEditor editor, Point from, Point to, Color color);
+	public abstract boolean draw(DrawEditor editor, Point from, Point to, Color color);
 	
 	/**
 	 * @param editor 	draw editor
