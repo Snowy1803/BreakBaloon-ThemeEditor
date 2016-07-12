@@ -33,4 +33,8 @@ public abstract class ContentEditor extends JPanel {
 	public UndoManager getUndoManager() {
 		return null;
 	}
+
+	public void removedFromView() {}
+
+	public void addedToView() {}
 }

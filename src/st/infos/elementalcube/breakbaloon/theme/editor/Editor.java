@@ -89,7 +89,7 @@ public class Editor extends JFrame {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 	}
 	
-	private JMenuBar constructJMenuBar() {
+	public JMenuBar constructJMenuBar() {
 		JMenuBar bar = new JMenuBar();
 		
 		JMenu file = new JMenu(Lang.getString("menu.file")),
@@ -199,9 +199,13 @@ public class Editor extends JFrame {
 	}
 	
 	public void setContentEditor(ContentEditor content) {
+		if (getContentEditor() != null) {
+			getContentEditor().removedFromView();
+		}
 		container.removeAll();
 		if (content != null) {
 			container.add(content);
+			content.addedToView();
 		}
 		revalidate();
 		reloadUndoRedo();

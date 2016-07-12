@@ -127,6 +127,16 @@ public class BaloonImageContentEditor extends ImageContentEditor {
 		return (DrawEditor) pane.getBottomComponent();
 	}
 	
+	@Override
+	public void addedToView() {
+		//TODO add special menus
+	}
+	
+	@Override
+	public void removedFromView() {
+		frame.setJMenuBar(frame.constructJMenuBar());//Remove special menus.
+	}
+	
 	public static enum EnumBaloonType {
 		CLOSED("closed"), OPENED("opened"), OPENED_GOOD("openedGood");
 		
