@@ -42,12 +42,14 @@ public class UndoableImageEdit extends AbstractUndoableEdit {
 		private ArrayList<Color> previousColors = new ArrayList<>();
 		private ArrayList<Color> newColors = new ArrayList<>();
 		
-		public void add(Point point, Color previous, Color next) {
+		public boolean add(Point point, Color previous, Color next) {
 			if (!previous.equals(next)) {
 				points.add(point);
 				previousColors.add(previous);
 				newColors.add(next);
+				return true;
 			}
+			return false;
 		}
 		
 		public UndoableImageEdit toUndoableImageEdit(DrawEditor editor) {

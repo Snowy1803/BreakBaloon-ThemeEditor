@@ -82,6 +82,7 @@ public class Editor extends JFrame {
 		contentPane.setDividerLocation(200);
 		setContentPane(contentPane);
 		setJMenuBar(constructJMenuBar());
+		reloadUndoRedo();
 		setSize(900, 650);
 		setLocationRelativeTo(null);
 		addWindowListener(new WindowCloseListener());
@@ -214,8 +215,11 @@ public class Editor extends JFrame {
 				undo.setEnabled(um.canUndo());
 				redo.setEnabled(um.canRedo());
 				repaint();
+				return;
 			}
 		}
+		undo.setEnabled(false);
+		redo.setEnabled(false);
 	}
 
 	public ContentEditor getContentEditor() {
