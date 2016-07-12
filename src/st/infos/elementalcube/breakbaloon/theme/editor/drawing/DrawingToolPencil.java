@@ -1,5 +1,7 @@
 package st.infos.elementalcube.breakbaloon.theme.editor.drawing;
 
+import st.infos.elementalcube.breakbaloon.theme.editor.drawing.UndoableImageEdit.UndoableImageEditBuilder;
+
 import java.awt.Color;
 import java.awt.Point;
 
@@ -11,6 +13,8 @@ public class DrawingToolPencil extends DrawingTool {
 	
 	@Override
 	public boolean draw(DrawEditor editor, Point from, Point to, Color color) {
+		UndoableImageEditBuilder builder = new UndoableImageEditBuilder();
+		
 		int x = from.x, x2 = to.x, y = from.y, y2 = to.y;
 		int w = x2 - x;
 		int h = y2 - y;
@@ -32,6 +36,7 @@ public class DrawingToolPencil extends DrawingTool {
 		}
 		int numerator = longest >> 1;
 		for (int i = 0; i <= longest; i++) {
+			builder.add(new Point(x, y), new Color(editor.getImage().getRGB(x, y), true), color);
 			editor.getImage().setRGB(x, y, color.getRGB());
 			numerator += shortest;
 			if (!(numerator < longest)) {
@@ -43,6 +48,11 @@ public class DrawingToolPencil extends DrawingTool {
 				y += dy2;
 			}
 		}
-		return true;
+		UndoableImageEdit edit = builder.toUndoableImageEdit(editor);
+		if (edit != null) {
+			editor.undoManager.addEdit(edit);
+			return true;
+		}
+		return false;
 	}
 }

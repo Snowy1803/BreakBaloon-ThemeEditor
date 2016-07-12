@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+import javax.swing.undo.UndoManager;
 
 public abstract class ContentEditor extends JPanel {
 	private static final long serialVersionUID = 6518309996553924717L;
@@ -28,4 +29,8 @@ public abstract class ContentEditor extends JPanel {
 	public abstract void saveToBBTheme(BBTheme theme);
 	
 	public abstract void loadFromBBTheme(BBTheme theme);
+	
+	public UndoManager getUndoManager() {
+		return null;
+	}
 }

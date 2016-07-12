@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
+import javax.swing.undo.UndoManager;
 
 public class DrawEditor extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
 	private static final long serialVersionUID = -5583820906102563391L;
@@ -33,6 +34,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	private Editor editor;
 	private ImageEditorToolbar toolbar;
 	public Point mouseCoords;
+	public UndoManager undoManager;
 	
 	public DrawEditor(Editor editor, Dimension imageDimension) {
 		setTransferHandler(new ImageEditorTransferHandler(this));
@@ -40,6 +42,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
+		undoManager = new UndoManager();
 		image = new BufferedImage(imageDimension.width, imageDimension.height, BufferedImage.TYPE_INT_ARGB);
 		this.editor = editor;
 		for (int i = 0; i < image.getWidth(); i++) {
@@ -69,11 +72,17 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	
 	public void clear() {
 		int rgb = Integer.parseInt(editor.theme.getMetadata("background", null, "" + 0xFFFFFF));
+		Point[] points = new Point[image.getWidth() * image.getHeight()];
+		Color[] colors = new Color[image.getWidth() * image.getHeight()],
+				newColor = new Color[image.getWidth() * image.getHeight()];
 		for (int i = 0; i < image.getWidth(); i++) {
 			for (int j = 0; j < image.getHeight(); j++) {
+				colors[i * image.getWidth() + j] = new Color(image.getRGB(i, j), true);
 				image.setRGB(i, j, rgb);
+				newColor[i * image.getWidth() + j] = new Color(rgb, true);
 			}
 		}
+		undoManager.addEdit(new UndoableImageEdit(this, points, colors, newColor));
 		repaint();
 	}
 	
@@ -82,7 +91,19 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	}
 	
 	public void setImage(BufferedImage image) {
+		BufferedImage previousImage = this.image;
 		this.image = image;
+		Point[] points = new Point[image.getWidth() * image.getHeight()];
+		Color[] previousColors = new Color[image.getWidth() * image.getHeight()];
+		Color[] newColors = new Color[image.getWidth() * image.getHeight()];
+		for (int i = 0; i < image.getWidth(); i++) {
+			for (int j = 0; j < image.getHeight(); j++) {
+				points[i * image.getWidth() + j] = new Point(i, j);
+				previousColors[i * image.getWidth() + j] = new Color(previousImage.getRGB(i, j), true);
+				newColors[i * image.getWidth() + j] = new Color(image.getRGB(i, j), true);
+			}
+		}
+		undoManager.addEdit(new UndoableImageEdit(this, points, previousColors, newColors));
 	}
 	
 	@Override

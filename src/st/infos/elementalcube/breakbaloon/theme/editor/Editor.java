@@ -28,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.undo.UndoManager;
 
 public class Editor extends JFrame {
 	private static final long serialVersionUID = -247298518651532746L;
@@ -36,6 +37,7 @@ public class Editor extends JFrame {
 	private boolean saved = true;
 	private File saveFile;
 	private JPanel menu, container;
+	private JMenuItem undo, redo;
 	
 	public Editor(String file) {
 		this(new File(file));
@@ -89,19 +91,25 @@ public class Editor extends JFrame {
 	private JMenuBar constructJMenuBar() {
 		JMenuBar bar = new JMenuBar();
 		
-		JMenu file = new JMenu(Lang.getString("menu.file"));
+		JMenu file = new JMenu(Lang.getString("menu.file")),
+				edit = new JMenu(Lang.getString("menu.edit"));
 		
 		JMenuItem newWindow = new JMenuItem(Lang.getString("menu.file.new.window")), open = new JMenuItem(Lang.getString("menu.file.open")),
 				save = new JMenuItem(Lang.getString("menu.file.save")), saveAs = new JMenuItem(Lang.getString("menu.file.saveAs")),
 				exportZip = new JMenuItem(Lang.getString("menu.file.export.zip")), addIngame = new JMenuItem(Lang.getString("menu.file.ingame"));
+		undo = new JMenuItem(Lang.getString("menu.edit.undo"));
+		redo = new JMenuItem(Lang.getString("menu.edit.redo"));
 				
 		newWindow.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 		saveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 		exportZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK));
+		undo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
+		redo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK));
 		
 		file.setMnemonic('F');
+		edit.setMnemonic('E');
 		newWindow.setMnemonic('N');
 		open.setMnemonic('O');
 		save.setMnemonic('S');
@@ -145,6 +153,32 @@ public class Editor extends JFrame {
 				addIngame();
 			}
 		});
+		undo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ContentEditor ce = getContentEditor();
+				if (ce != null) {
+					UndoManager um = ce.getUndoManager();
+					if (um != null) {
+						um.undo();
+						reloadUndoRedo();
+					}
+				}
+			}
+		});
+		redo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ContentEditor ce = getContentEditor();
+				if (ce != null) {
+					UndoManager um = ce.getUndoManager();
+					if (um != null) {
+						um.redo();
+						reloadUndoRedo();
+					}
+				}
+			}
+		});
 		
 		file.add(newWindow);
 		file.add(open);
@@ -154,7 +188,11 @@ public class Editor extends JFrame {
 		file.add(exportZip);
 		file.add(addIngame);
 		
+		edit.add(undo);
+		edit.add(redo);
+		
 		bar.add(file);
+		bar.add(edit);
 		
 		return bar;
 	}
@@ -165,8 +203,21 @@ public class Editor extends JFrame {
 			container.add(content);
 		}
 		revalidate();
+		reloadUndoRedo();
 	}
 	
+	private void reloadUndoRedo() {
+		ContentEditor ce = getContentEditor();
+		if (ce != null) {
+			UndoManager um = ce.getUndoManager();
+			if (um != null) {
+				undo.setEnabled(um.canUndo());
+				redo.setEnabled(um.canRedo());
+				repaint();
+			}
+		}
+	}
+
 	public ContentEditor getContentEditor() {
 		return container.getComponentCount() == 1 ? (ContentEditor) container.getComponent(0) : null;
 	}
@@ -174,6 +225,7 @@ public class Editor extends JFrame {
 	public void makeDirty() {
 		saved = false;
 		setTitle(Lang.getString("editor.name.unsaved", VERSION));
+		reloadUndoRedo();
 	}
 	
 	public void saved() {
