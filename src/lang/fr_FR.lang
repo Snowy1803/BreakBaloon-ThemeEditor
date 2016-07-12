@@ -26,7 +26,7 @@ editor.image.toolbar.color=Couleur
 editor.image.toolbar.clear=Nettoyer l'image
 editor.image.toolbar.pencil=Utiliser le crayon
 editor.image.toolbar.fill=Utiliser l'outil de remplissage
-editor.image.toolbar.line=Utiliser l'outil de lignes droite
+editor.image.toolbar.line=Utiliser l'outil de ligne droite
 editor.image.number=Ballon n°%d
 
 editor.icon.icon=Icône
