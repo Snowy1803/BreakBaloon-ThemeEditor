@@ -59,7 +59,7 @@ public class Editor extends JFrame {
 	}
 	
 	private void construct() {
-		setTitle(Lang.getString("editor.name"));
+		setTitle(Lang.getString("editor.name", "1.1-alpha"));
 		
 		menu = new JPanel();
 		menu.setLayout(new BoxLayout(menu, BoxLayout.PAGE_AXIS));

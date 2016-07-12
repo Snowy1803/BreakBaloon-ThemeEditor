@@ -4,8 +4,8 @@ lang.text=English (US)
 windows.assoc.adminNeeded.title=Cannot associate
 windows.assoc.adminNeeded.text=You must execute the program in admin mode to activate file association.
 
-editor.name=BreakBaloon Theme Editor
-editor.name.unsaved=* BreakBaloon Theme Editor
+editor.name=BreakBaloon Theme Editor %s
+editor.name.unsaved=* BreakBaloon Theme Editor %s
 editor.saveUnsavedChanges.title=Save
 editor.saveUnsavedChanges.text=Do you want to save unsaved changes before close the theme editor?
 

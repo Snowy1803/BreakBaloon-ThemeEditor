@@ -4,8 +4,8 @@ lang.text=Français
 windows.assoc.adminNeeded.title=Association impossible
 windows.assoc.adminNeeded.text=Vous devez exécuter le programme en mode administrateur pour activer l'association des fichiers.
 
-editor.name=Editeur de thèmes BreakBaloon
-editor.name.unsaved=* Editeur de thèmes BreakBaloon
+editor.name=Editeur de thèmes BreakBaloon %s
+editor.name.unsaved=* Editeur de thèmes BreakBaloon %s
 editor.saveUnsavedChanges.title=Sauvegarder
 editor.saveUnsavedChanges.text=Souhaitez-vous sauvegarder vos modifications avant de fermer l'éditeur de thèmes ?
 
