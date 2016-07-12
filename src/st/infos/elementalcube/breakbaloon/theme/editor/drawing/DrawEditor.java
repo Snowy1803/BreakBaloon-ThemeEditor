@@ -55,6 +55,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, image.getWidth() * zoomLevel, image.getHeight() * zoomLevel);
 		g.drawImage(image, 0, 0, image.getWidth() * zoomLevel, image.getHeight() * zoomLevel, null);
+		toolbar.currentTool.paintOverlay((Graphics2D) g);
 	}
 	
 	public void setToolbar(ImageEditorToolbar toolbar) {
