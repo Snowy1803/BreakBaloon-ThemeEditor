@@ -60,6 +60,9 @@ menu.file.save=Save
 menu.file.saveAs=Save as...
 menu.file.export.zip=Export as .zip
 menu.file.ingame=Add theme in game
+menu.edit=Edit
+menu.edit.undo=Undo
+menu.edit.redo=Redo
 
 filefilter.bbtheme=Theme configuration file (.bbtheme)
 filefilter.zip=Compressed folders (.zip)
