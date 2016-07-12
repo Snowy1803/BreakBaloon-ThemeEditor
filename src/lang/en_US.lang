@@ -26,6 +26,7 @@ editor.image.toolbar.color=Color
 editor.image.toolbar.clear=Clear image
 editor.image.toolbar.pencil=Use the pencil
 editor.image.toolbar.fill=Use the fill tool
+editor.image.toolbar.line=Use the line tool
 editor.image.number=Baloon #%d
 
 editor.icon.icon=Theme icon

@@ -10,9 +10,14 @@ public abstract class DrawingTool {
 	public abstract void draw(DrawEditor editor, Point from, Point to, Color color);
 	
 	/**
-	 * @param g2d Graphics to paint on.
+	 * @param editor 	draw editor
+	 * @param g2d 		Graphics to paint on.
 	 */
-	public void paintOverlay(Graphics2D g2d) {}
+	public void paintOverlay(DrawEditor editor, Graphics2D g2d) {}
+	
+	public boolean needRepainting() {
+		return false;
+	}
 	
 	public enum EnumUseType {
 		PRESSED, RELEASED, DRAGGED

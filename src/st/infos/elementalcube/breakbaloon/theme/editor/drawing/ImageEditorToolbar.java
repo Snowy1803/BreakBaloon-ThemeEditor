@@ -24,8 +24,9 @@ public class ImageEditorToolbar extends JToolBar implements ActionListener {
 	private static final String BUTTON_COLOR = "color",
 								BUTTON_CLEAR = "clear",
 								BUTTON_PENCIL = "pencil",
-								BUTTON_FILL = "fill";
-	private JButton color, pencil, fill;
+								BUTTON_FILL = "fill",
+								BUTTON_LINE = "line";
+	private JButton color, pencil, fill, line;
 	
 	public Color currentColor = Color.BLACK;
 	public DrawingTool currentTool = new DrawingToolPencil();
@@ -40,6 +41,7 @@ public class ImageEditorToolbar extends JToolBar implements ActionListener {
 		addSeparator();
 		pencil = addButton(BUTTON_PENCIL);
 		fill = addButton(BUTTON_FILL);
+		line = addButton(BUTTON_LINE);
 		adaptColorButton();
 	}
 	
@@ -49,9 +51,11 @@ public class ImageEditorToolbar extends JToolBar implements ActionListener {
 			BufferedImage convertedColor = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_COLOR + ".png")), null);
 			BufferedImage convertedPencil = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_PENCIL + ".png")), null);
 			BufferedImage convertedFill = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_FILL + ".png")), null);
+			BufferedImage convertedLine = lookup.filter(ImageIO.read(getClass().getResource("/img/" + BUTTON_LINE + ".png")), null);
 			color.setIcon(new ImageIcon(convertedColor.getScaledInstance(32, 32, BufferedImage.SCALE_SMOOTH)));
 			pencil.setIcon(new ImageIcon(convertedPencil));
 			fill.setIcon(new ImageIcon(convertedFill));
+			line.setIcon(new ImageIcon(convertedLine));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -77,6 +81,8 @@ public class ImageEditorToolbar extends JToolBar implements ActionListener {
 			currentTool = new DrawingToolPencil();
 		} else if (BUTTON_FILL.equals(e.getActionCommand())) {
 			currentTool = new DrawingToolFill();
+		} else if (BUTTON_LINE.equals(e.getActionCommand())) {
+			currentTool = new DrawingToolLine();
 		}
 	}
 	

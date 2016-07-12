@@ -32,6 +32,7 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	private Point last;
 	private Editor editor;
 	private ImageEditorToolbar toolbar;
+	public Point mouseCoords;
 	
 	public DrawEditor(Editor editor, Dimension imageDimension) {
 		setTransferHandler(new ImageEditorTransferHandler(this));
@@ -55,7 +56,11 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 		g.setColor(Color.BLACK);
 		g.drawRect(0, 0, image.getWidth() * zoomLevel, image.getHeight() * zoomLevel);
 		g.drawImage(image, 0, 0, image.getWidth() * zoomLevel, image.getHeight() * zoomLevel, null);
-		toolbar.currentTool.paintOverlay((Graphics2D) g);
+		toolbar.currentTool.paintOverlay(this, (Graphics2D) g);
+	}
+	
+	public ImageEditorToolbar getToolbar() {
+		return toolbar;
 	}
 	
 	public void setToolbar(ImageEditorToolbar toolbar) {
@@ -100,20 +105,39 @@ public class DrawEditor extends JPanel implements MouseListener, MouseMotionList
 	}
 	
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+		mouseCoords = e.getPoint();
+		if (toolbar.currentTool.needRepainting()) {
+			repaint();
+		}
+	}
 	
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+		mouseCoords = null;
+		if (toolbar.currentTool.needRepainting()) {
+			repaint();
+		}
+	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if (toolbar.currentTool.canBeUsed(EnumUseType.DRAGGED)) {
 			draw(e.getPoint(), SwingUtilities.isLeftMouseButton(e));
 		}
+		mouseCoords = e.getPoint();
+		if (toolbar.currentTool.needRepainting()) {
+			repaint();
+		}
 	}
 	
 	@Override
-	public void mouseMoved(MouseEvent e) {}
+	public void mouseMoved(MouseEvent e) {
+		mouseCoords = e.getPoint();
+		if (toolbar.currentTool.needRepainting()) {
+			repaint();
+		}
+	}
 	
 	private void draw(Point point, boolean leftClick) {
 		Point scaled = new Point(point.x / zoomLevel, point.y / zoomLevel);
