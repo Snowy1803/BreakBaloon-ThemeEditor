@@ -31,7 +31,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Editor extends JFrame {
 	private static final long serialVersionUID = -247298518651532746L;
-	public static final String VERSION = "1.1-alpha";
+	public static final String VERSION = "1.1";
 	public BBTheme theme;
 	private boolean saved = true;
 	private File saveFile;
