@@ -215,14 +215,16 @@ class ImageEditorTransferHandler extends TransferHandler {
 	public boolean importData(TransferSupport ts) {
 		try {
 			if (ts.isDataFlavorSupported(DataFlavor.imageFlavor)) {
-				editor.setImage(toBufferedImage((Image) ts.getTransferable().getTransferData(DataFlavor.imageFlavor)));
+				editor.setImage(toBufferedImage(((Image) ts.getTransferable().getTransferData(DataFlavor.imageFlavor)), 
+						editor.getImage().getWidth(), editor.getImage().getHeight()));
 				editor.repaint();
 				return true;
 			} else if (ts.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				@SuppressWarnings("unchecked")
 				List<File> files = (List<File>) ts.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
 				if (files.size() == 1) {
-					editor.setImage(ImageIO.read(files.get(0)));
+					editor.setImage(toBufferedImage(ImageIO.read(files.get(0)), editor.getImage().getWidth(), 
+							editor.getImage().getHeight()));
 				}
 				editor.repaint();
 				return true;
@@ -233,17 +235,13 @@ class ImageEditorTransferHandler extends TransferHandler {
 		return false;
 	}
 	
-	public static BufferedImage toBufferedImage(Image img) {
-		if (img instanceof BufferedImage) {
-			return (BufferedImage) img;
-		}
-		
+	public static BufferedImage toBufferedImage(Image img, int newWidth, int newHeight) {
 		// Create a buffered image with transparency
-		BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bimage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
 		
 		// Draw the image on to the buffered image
 		Graphics2D bGr = bimage.createGraphics();
-		bGr.drawImage(img, 0, 0, null);
+		bGr.drawImage(img, 0, 0, newWidth, newHeight, null);
 		bGr.dispose();
 		
 		// Return the buffered image
